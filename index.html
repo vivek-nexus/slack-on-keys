@@ -6,26 +6,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Hello World!</title>
+    <title>Slack on Keys</title>
 </head>
 
 <body>
-    <h1>Hello World!</h1>
-    <p>
-        We are using Node.js <span id="node-version"></span>,
-        Chromium <span id="chrome-version"></span>,
-        and Electron <span id="electron-version"></span>.
-    </p>
+    <h1>Slack on Keys</h1>
+    <p><b>Super fast Slack actions from any app, with keyboard shortcuts</b></p>
 
-    <input placeholder="slack-token" id="i-slack-token" />
+    <hr />
+
+    <br />
+
     <div>
-        <input placeholder="slack-status-emoji" id="i-status-emoji-text" />
-        <input placeholder="slack-status-text" id="i-status-text" />
-        <input type="number" placeholder="slack-status-expiry-in-minutes" id="i-status-expiry-text" />
+        <label for="">Slack token</label>
+        <input placeholder="Starts with xoxp-" id="i-slack-token" />
     </div>
 
+    <br />
+
+    <hr />
+
+    <br />
+    
     <div>
-        <input type="number" placeholder="Pause notifications until (in-minutes)" id="i-dnd-expiry-text" />
+        <p><b>Super fast status</b></p>
+
+        <div>
+            <label for="">Slack status emoji</label>
+            <input placeholder=":speech_balloon:" id="i-status-emoji-text" />
+        </div>
+        <div>
+            <label for="">Slack status text</label>
+            <input placeholder="Working remotely" id="i-status-text" />
+        </div>
+
+        <div>
+            <label for="">Slack status expiry in minutes</label>
+            <input type="number" placeholder="0" id="i-status-expiry-text" />
+        </div>
+    </div>
+    <br />
+
+    <hr />
+
+    <br />
+
+    <div>
+        <p><b>Super fast pausing/resuming notification</b></p>
+        <div>
+            <label for="">Pause notifications until, in-minutes</label>
+            <input type="number" placeholder="Pause notifications until (in-minutes)" id="i-dnd-expiry-text" />
+        </div>
+    </div>
+
+    <br />
+
+    <hr />
+
+    <br />
+
+    <div>
+        <p><b>Super fast active/inactive</b></p>
     </div>
 
     <button id="b-save">Save and slide to background</button>
