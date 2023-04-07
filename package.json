@@ -20,6 +20,7 @@
     "electron": "^24.0.0"
   },
   "dependencies": {
+    "auto-launch": "^5.0.5",
     "electron-squirrel-startup": "^1.0.0"
   }
 }

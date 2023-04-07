@@ -3,7 +3,22 @@ const { globalShortcut } = require('electron/main')
 const path = require('path')
 
 
+//Auto launch
+var AutoLaunch = require('auto-launch');
+var autoLauncher = new AutoLaunch({
+    name: "slack-on-keys"
+});
+// Checking if autoLaunch is enabled, if not then enabling it.
+autoLauncher.isEnabled().then(function (isEnabled) {
+    if (isEnabled) return;
+    autoLauncher.enable();
+}).catch(function (err) {
+    throw err;
+});
 
+
+
+// variables
 let tray = null
 let mainWindow
 const contextMenu = Menu.buildFromTemplate([
@@ -13,6 +28,7 @@ const contextMenu = Menu.buildFromTemplate([
             if (BrowserWindow.getAllWindows().length === 0) {
                 mainWindow = createWindow()
             }
+            mainWindow.show()
         }
     },
     {
