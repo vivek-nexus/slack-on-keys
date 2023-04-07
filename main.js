@@ -1,7 +1,57 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu, Tray } = require('electron')
 const { globalShortcut } = require('electron/main')
 const path = require('path')
 
+
+
+let tray = null
+let mainWindow
+const contextMenu = Menu.buildFromTemplate([
+    {
+        label: 'Settings',
+        click: () => {
+            if (BrowserWindow.getAllWindows().length === 0) {
+                mainWindow = createWindow()
+            }
+        }
+    },
+    {
+        label: 'Quit app',
+        click: () => app.quit()
+    },
+])
+
+
+
+// processes
+app.whenReady().then(() => {
+    mainWindow = createWindow()
+
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            mainWindow = createWindow()
+        }
+    })
+
+    setGlobalShortCuts(mainWindow)
+
+    tray = new Tray('icon.png')
+    tray.setToolTip('This is my application.')
+    tray.setContextMenu(contextMenu)
+})
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        return
+    }
+})
+
+
+
+
+
+
+// functions
 function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 800,
@@ -17,24 +67,6 @@ function createWindow() {
     mainWindow.loadFile('index.html')
     return mainWindow
 }
-
-app.whenReady().then(() => {
-    let mainWindow = createWindow()
-
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            mainWindow = createWindow()
-        }
-    })
-
-    setGlobalShortCuts(mainWindow)
-})
-
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
-})
 
 
 function setGlobalShortCuts(mainWindow) {
@@ -69,10 +101,10 @@ function alterStatus(type) {
     };
 
     fetch("https://slack.com/api/users.profile.set", requestOptions)
-        // .then((response) => response.text())
-        // .then((result) => {
-        //     // console.log("Slack status altered")
-        // })
-        // .catch((error) => console.log("error", error));
-        console.log(`Slack status ${type}`)
+    // .then((response) => response.text())
+    // .then((result) => {
+    //     // console.log("Slack status altered")
+    // })
+    // .catch((error) => console.log("error", error));
+    console.log(`Slack status ${type}`)
 }
