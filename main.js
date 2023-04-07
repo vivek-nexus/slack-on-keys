@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray, safeStorage, ipcMain } = require('electron')
+const { app, BrowserWindow, Menu, Tray, safeStorage, ipcMain, Notification } = require('electron')
 const { globalShortcut } = require('electron/main')
 const path = require('path')
 const Store = require('electron-store');
@@ -135,7 +135,10 @@ function alterStatus(type) {
     //     // console.log("Slack status altered")
     // })
     // .catch((error) => console.log("error", error));
-    console.log(`Slack status ${type}`)
+    new Notification({
+        title: `Slack status ${type == "set" ? `set` : `cleared`}`,
+        body: "Bye now!"
+      }).show();
 }
 
 function writeToken(token) {
