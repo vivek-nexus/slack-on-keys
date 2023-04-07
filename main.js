@@ -1,6 +1,7 @@
-const { app, BrowserWindow, Menu, Tray } = require('electron')
+const { app, BrowserWindow, Menu, Tray, safeStorage, ipcMain } = require('electron')
 const { globalShortcut } = require('electron/main')
 const path = require('path')
+const Store = require('electron-store');
 
 
 //Auto launch
@@ -11,7 +12,7 @@ var autoLauncher = new AutoLaunch({
 // Checking if autoLaunch is enabled, if not then enabling it.
 autoLauncher.isEnabled().then(function (isEnabled) {
     if (isEnabled) return;
-    autoLauncher.enable();
+    autoLauncher.enable(); slackTokenInputField.value
 }).catch(function (err) {
     throw err;
 });
@@ -37,6 +38,9 @@ const contextMenu = Menu.buildFromTemplate([
     },
 ])
 
+const store = new Store()
+
+
 
 
 // processes
@@ -60,6 +64,14 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         return
     }
+})
+
+ipcMain.on("slack-token", function (event, token) {
+    storeToken(token)
+})
+
+ipcMain.on("general-message", function (event, message) {
+    console.log("Message: " + message)
 })
 
 
@@ -97,7 +109,7 @@ function setGlobalShortCuts(mainWindow) {
 }
 
 function alterStatus(type) {
-    let key = ``;
+    let token = readToken();
     let raw = JSON.stringify({
         profile: {
             status_text: type == "set" ? `Hello` : ``,
@@ -110,7 +122,7 @@ function alterStatus(type) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${key}`
+            "Authorization": `Bearer ${token}`
         },
         body: raw,
         redirect: "follow",
@@ -124,3 +136,22 @@ function alterStatus(type) {
     // .catch((error) => console.log("error", error));
     console.log(`Slack status ${type}`)
 }
+
+function storeToken(token) {
+    store.set("token", token)
+    // let encryptedToken = safeStorage.encryptString(token)
+    // console.log("Encrypted token should look like " + JSON.stringify(encryptedToken))
+    // store.set("token", JSON.stringify(encryptedToken))
+    // console.log("Decrypted token should look like " + safeStorage.decryptString(encryptedToken))
+}
+
+function readToken() {
+    if (store.get("token") == undefined)
+        return ``
+    else {
+        // console.log(JSON.parse(store.get("token")))
+        // return (safeStorage.decryptString(JSON.parse(store.get("token"))))
+        return (store.get("token"))
+    }
+}
+
