@@ -65,14 +65,15 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin')
-        return
-    else
-        app.dock.hide()
+    minimise()
 })
 
 ipcMain.on("store-slack-token", function (event, token) {
     writeToken(token)
+})
+
+ipcMain.on("minimise", function () {
+    minimise()
 })
 
 ipcMain.on("general-message", function (event, message) {
@@ -109,6 +110,15 @@ function setGlobalShortCuts(mainWindow) {
     globalShortcut.register('ctrl+shift+1', () => alterStatus("clear"))
 }
 
+function minimise() {
+    if (BrowserWindow.getAllWindows().length != 0)
+        mainWindow.close()
+    if (process.platform !== 'darwin')
+        return
+    else
+        app.dock.hide()
+}
+
 function alterStatus(type) {
     let token = readToken();
     let raw = JSON.stringify({
@@ -138,7 +148,7 @@ function alterStatus(type) {
     new Notification({
         title: `Slack status ${type == "set" ? `set` : `cleared`}`,
         body: "Bye now!"
-      }).show();
+    }).show();
 }
 
 function writeToken(token) {

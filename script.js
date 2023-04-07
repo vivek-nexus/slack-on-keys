@@ -17,10 +17,12 @@ ipcRenderer.on("read-slack-token", function (event, token) {
 })
 saveButton.addEventListener("click", () => {
     console.log(statusText.value)
+    ipcRenderer.send("minimise");
     ipcRenderer.send("store-slack-token", slackTokenText.value)
     writeValueToStore("statusEmojiText", statusEmojiText.value)
     writeValueToStore("statusText", statusText.value)
 })
+
 
 // read initial values
 statusEmojiText.value = readValueFromStore("statusEmojiText")
