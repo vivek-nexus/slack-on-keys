@@ -1,43 +1,41 @@
+// imports
 const { ipcRenderer, safeStorage } = require("electron")
 const Store = require('electron-store');
 
+// declarations
 const store = new Store()
 
+// DOM
+let slackTokenText = document.querySelector("#i-slack-token")
+let statusEmojiText = document.querySelector("#i-status-emoji-text")
+let statusText = document.querySelector("#i-status-text")
+let saveButton = document.querySelector("#b-save")
 
-let slackTokenInputField = document.querySelector("#slack-token")
-let saveButton = document.querySelector("#save")
-
-
-ipcRenderer.on("read-slack-token", function(event, token){
-    console.log(token)
-    // alert(token)
-    slackTokenInputField.value = token
+// slack token save messaging
+ipcRenderer.on("read-slack-token", function (event, token) {
+    slackTokenText.value = token
 })
-
-
 saveButton.addEventListener("click", () => {
-    ipcRenderer.send("store-slack-token", slackTokenInputField.value)
-    // storeToken(slackTokenInputField.value)
+    console.log(statusText.value)
+    ipcRenderer.send("store-slack-token", slackTokenText.value)
+    writeValueToStore("statusEmojiText", statusEmojiText.value)
+    writeValueToStore("statusText", statusText.value)
 })
 
+// read initial values
+statusEmojiText.value = readValueFromStore("statusEmojiText")
+statusText.value = readValueFromStore("statusText")
 
 
 
-function storeToken(token) {
-    // store.set("token", token)
-    let encryptedToken = safeStorage.encryptString(token).toString('latin1')
-    // console.log("Encrypted token should look like " + JSON.stringify(encryptedToken))
-    console.log(encryptedToken)
-    store.set("token", encryptedToken)
-    // console.log("Decrypted token should look like " + safeStorage.decryptString(encryptedToken))
+
+function readValueFromStore(key) {
+    if (store.get(key) == undefined)
+        return ``
+    else
+        return store.get(key)
 }
 
-function readToken() {
-    if (store.get("token") == undefined)
-        return ``
-    else {
-        // console.log(JSON.parse(store.get("token")))
-        return (safeStorage.decryptString(Buffer.from(store.get("token"), "latin1")))
-        // return (store.get("token"))
-    }
+function writeValueToStore(key, value) {
+    store.set(key, value)
 }

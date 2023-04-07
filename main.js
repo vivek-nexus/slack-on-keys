@@ -47,7 +47,12 @@ const store = new Store()
 app.whenReady().then(() => {
     mainWindow = createWindow()
 
-    console.log("Saved token: " + readToken())
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            mainWindow = createWindow()
+        }
+    })
+
     mainWindow.webContents.once("dom-ready", function () {
         mainWindow.webContents.send("read-slack-token", readToken())
     })
@@ -57,12 +62,6 @@ app.whenReady().then(() => {
     tray = new Tray(path.join(__dirname, 'icon.png'))
     tray.setToolTip('This is my application.')
     tray.setContextMenu(contextMenu)
-
-    // app.on('activate', () => {
-    //     if (BrowserWindow.getAllWindows().length === 0) {
-    //         mainWindow = createWindow()
-    //     }
-    // })
 })
 
 app.on('window-all-closed', () => {
@@ -73,7 +72,7 @@ app.on('window-all-closed', () => {
 })
 
 ipcMain.on("store-slack-token", function (event, token) {
-    storeToken(token)
+    writeToken(token)
 })
 
 ipcMain.on("general-message", function (event, message) {
@@ -114,8 +113,8 @@ function alterStatus(type) {
     let token = readToken();
     let raw = JSON.stringify({
         profile: {
-            status_text: type == "set" ? `Hello` : ``,
-            status_emoji: type == "set" ? `:eyes:` : ``,
+            status_emoji: type == "set" ? store.get("statusEmojiText") : ``,
+            status_text: type == "set" ? store.get("statusText") : ``,
             status_expiration: 0,
         }
     })
@@ -139,9 +138,8 @@ function alterStatus(type) {
     console.log(`Slack status ${type}`)
 }
 
-function storeToken(token) {
+function writeToken(token) {
     let encryptedToken = safeStorage.encryptString(token).toString('latin1')
-    console.log(encryptedToken)
     store.set("token", encryptedToken)
 }
 
@@ -150,7 +148,6 @@ function readToken() {
         return ``
     else {
         let decryptedToken = safeStorage.decryptString(Buffer.from(store.get("token"), "latin1"))
-        console.log(decryptedToken)
         return decryptedToken
     }
 }
