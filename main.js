@@ -111,6 +111,10 @@ function setGlobalShortCuts(mainWindow) {
 
     globalShortcut.register('ctrl+1', () => alterStatus("set"))
     globalShortcut.register('ctrl+shift+1', () => alterStatus("clear"))
+    globalShortcut.register('ctrl+2', () => setDND())
+    globalShortcut.register('ctrl+shift+2', () => clearDND())
+    globalShortcut.register('ctrl+3', () => setPresence("auto"))
+    globalShortcut.register('ctrl+shift+3', () => setPresence("away"))
 }
 
 function minimise() {
@@ -122,10 +126,11 @@ function minimise() {
         app.dock.hide()
 }
 
+// Slack functions
 function alterStatus(type) {
     let token = readToken();
     let statusExpiryText = parseInt(store.get("statusExpiryText"))
-    let statusExpiry = statusExpiryText > 0 ? (statusExpiryText * 60) + Date.now()/1000 : 0 ;
+    let statusExpiry = statusExpiryText > 0 ? (statusExpiryText * 60) + Date.now() / 1000 : 0;
     let raw = JSON.stringify({
         profile: {
             status_emoji: type == "set" ? store.get("statusEmojiText") : ``,
@@ -151,10 +156,96 @@ function alterStatus(type) {
     // })
     // .catch((error) => console.log("error", error));
     new Notification({
-        title: `Slack status ${type == "set" ? `set` : `cleared`}`,
-        body: "Bye now!"
+        title: `Slack status ${type == "set" ? `set ${statusExpiryText > 0 ? `for the next ${statusExpiryText} minute${statusExpiryText == 1 ? `` : `s`}` : ``}` : `cleared`}`,
+        body: type == "set" ? `Communication is the key, isn't it?` : `Alrighty!`
     }).show();
 }
+
+function setDND() {
+    let token = readToken();
+    let DNDExpiry = parseInt(store.get("DNDExpiryText"))
+
+    if (!DNDExpiry) {
+        new Notification({
+            title: `Oops!`,
+            body: "How long should we pause for?"
+        }).show();
+        return
+    }
+
+    let requestOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${token}`
+        },
+        redirect: "follow",
+    };
+
+    fetch(`https://slack.com/api/dnd.setSnooze?num_minutes=${DNDExpiry}&pretty=1`, requestOptions)
+    // .then((response) => response.text())
+    // .then((result) => {
+    //     // console.log("Slack status altered")
+    // })
+    // .catch((error) => console.log("error", error));
+    new Notification({
+        title: `Slack notifications snoozed for ${DNDExpiry} minute${DNDExpiry == 1 ? `` : `s`}`,
+        body: "Pin drop silence is all yours!"
+    }).show();
+}
+
+function clearDND() {
+    let token = readToken();
+
+    let requestOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${token}`
+        },
+        redirect: "follow",
+    };
+
+    fetch(`https://slack.com/api/dnd.endSnooze?pretty=1`, requestOptions)
+    // .then((response) => response.text())
+    // .then((result) => {
+    //     // console.log("Slack status altered")
+    // })
+    // .catch((error) => console.log("error", error));
+    new Notification({
+        title: `Slack notifications resumed`,
+        body: "Ding ding ding!"
+    }).show();
+}
+
+function setPresence(type) {
+    let token = readToken();
+
+    let requestOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": `Bearer ${token}`
+        },
+        redirect: "follow",
+    };
+
+    fetch(`https://slack.com/api/users.setPresence?presence=${type}&pretty=1`, requestOptions)
+    // .then((response) => response.text())
+    // .then((result) => {
+    //     // console.log("Slack status altered")
+    // })
+    // .catch((error) => console.log("error", error));
+    new Notification({
+        title: type == "auto" ? `You are now set to active` : `You are now set to away`,
+        body: type == "auto" ? `Let's go!` : `Go get some fresh air!`
+    }).show();
+}
+
+
+
+
+
 
 function writeToken(token) {
     let encryptedToken = safeStorage.encryptString(token).toString('latin1')

@@ -11,6 +11,8 @@ let statusEmojiText = document.querySelector("#i-status-emoji-text")
 let statusText = document.querySelector("#i-status-text")
 let statusExpiryText = document.querySelector("#i-status-expiry-text")
 let saveButton = document.querySelector("#b-save")
+let DNDExpiryText = document.querySelector("#i-dnd-expiry-text")
+
 
 // slack token save messaging
 ipcRenderer.on("read-slack-token", function (event, token) {
@@ -21,6 +23,7 @@ saveButton.addEventListener("click", () => {
     writeValueToStore("statusEmojiText", statusEmojiText.value)
     writeValueToStore("statusText", statusText.value)
     writeValueToStore("statusExpiryText", statusExpiryText.value)
+    writeValueToStore("DNDExpiryText", DNDExpiryText.value)
     ipcRenderer.send("minimise");
 })
 
@@ -35,6 +38,7 @@ function readAllFromStorage() {
     statusEmojiText.value = readValueFromStore("statusEmojiText")
     statusText.value = readValueFromStore("statusText")
     statusExpiryText.value = readValueFromStore("statusExpiryText")
+    DNDExpiryText.value = readValueFromStore("DNDExpiryText")
 }
 
 function readValueFromStore(key) {
