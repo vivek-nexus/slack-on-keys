@@ -1,7 +1,7 @@
 {
   "name": "slack-on-keys",
   "version": "1.0.0",
-  "description": "Super fast Slack actions from any app",
+  "description": "Super fast Slack actions from any app, with keyboard shortcuts",
   "main": "main.js",
   "repository": "https://github.com/yakshaG/slack-on-keys",
   "author": "Vivek G",
