@@ -30,6 +30,9 @@ const contextMenu = Menu.buildFromTemplate([
                 mainWindow = createWindow()
             }
             mainWindow.show()
+            mainWindow.webContents.once("dom-ready", function () {
+                mainWindow.webContents.send("read-slack-token", readToken())
+            })
         }
     },
     {
@@ -121,11 +124,13 @@ function minimise() {
 
 function alterStatus(type) {
     let token = readToken();
+    let statusExpiryText = parseInt(store.get("statusExpiryText"))
+    let statusExpiry = statusExpiryText > 0 ? (statusExpiryText * 60) + Date.now()/1000 : 0 ;
     let raw = JSON.stringify({
         profile: {
             status_emoji: type == "set" ? store.get("statusEmojiText") : ``,
             status_text: type == "set" ? store.get("statusText") : ``,
-            status_expiration: 0,
+            status_expiration: statusExpiry,
         }
     })
 

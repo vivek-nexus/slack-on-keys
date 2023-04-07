@@ -9,6 +9,7 @@ const store = new Store()
 let slackTokenText = document.querySelector("#i-slack-token")
 let statusEmojiText = document.querySelector("#i-status-emoji-text")
 let statusText = document.querySelector("#i-status-text")
+let statusExpiryText = document.querySelector("#i-status-expiry-text")
 let saveButton = document.querySelector("#b-save")
 
 // slack token save messaging
@@ -16,20 +17,25 @@ ipcRenderer.on("read-slack-token", function (event, token) {
     slackTokenText.value = token
 })
 saveButton.addEventListener("click", () => {
-    console.log(statusText.value)
-    ipcRenderer.send("minimise");
     ipcRenderer.send("store-slack-token", slackTokenText.value)
     writeValueToStore("statusEmojiText", statusEmojiText.value)
     writeValueToStore("statusText", statusText.value)
+    writeValueToStore("statusExpiryText", statusExpiryText.value)
+    ipcRenderer.send("minimise");
 })
 
 
+
+
 // read initial values
-statusEmojiText.value = readValueFromStore("statusEmojiText")
-statusText.value = readValueFromStore("statusText")
+readAllFromStorage()
 
 
-
+function readAllFromStorage() {
+    statusEmojiText.value = readValueFromStore("statusEmojiText")
+    statusText.value = readValueFromStore("statusText")
+    statusExpiryText.value = readValueFromStore("statusExpiryText")
+}
 
 function readValueFromStore(key) {
     if (store.get(key) == undefined)
@@ -39,5 +45,6 @@ function readValueFromStore(key) {
 }
 
 function writeValueToStore(key, value) {
+    console.log(key + ": " + value)
     store.set(key, value)
 }
