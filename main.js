@@ -21,7 +21,7 @@ autoLauncher.isEnabled().then(function (isEnabled) {
 
 // variables
 let tray = null
-let mainWindow
+let mainWindow = null
 const contextMenu = Menu.buildFromTemplate([
     {
         label: 'Settings',
@@ -47,10 +47,9 @@ const store = new Store()
 app.whenReady().then(() => {
     mainWindow = createWindow()
 
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            mainWindow = createWindow()
-        }
+    console.log("Saved token: " + readToken())
+    mainWindow.webContents.once("dom-ready", function () {
+        mainWindow.webContents.send("read-slack-token", readToken())
     })
 
     setGlobalShortCuts(mainWindow)
@@ -58,6 +57,12 @@ app.whenReady().then(() => {
     tray = new Tray(path.join(__dirname, 'icon.png'))
     tray.setToolTip('This is my application.')
     tray.setContextMenu(contextMenu)
+
+    // app.on('activate', () => {
+    //     if (BrowserWindow.getAllWindows().length === 0) {
+    //         mainWindow = createWindow()
+    //     }
+    // })
 })
 
 app.on('window-all-closed', () => {
@@ -67,7 +72,7 @@ app.on('window-all-closed', () => {
         app.dock.hide()
 })
 
-ipcMain.on("slack-token", function (event, token) {
+ipcMain.on("store-slack-token", function (event, token) {
     storeToken(token)
 })
 
@@ -103,10 +108,6 @@ function setGlobalShortCuts(mainWindow) {
 
     globalShortcut.register('ctrl+1', () => alterStatus("set"))
     globalShortcut.register('ctrl+shift+1', () => alterStatus("clear"))
-
-    // globalShortcut.register('ctrl+1', function () {
-    //     mainWindow.webContents.send("global-shortcut")
-    // })
 }
 
 function alterStatus(type) {
@@ -139,20 +140,18 @@ function alterStatus(type) {
 }
 
 function storeToken(token) {
-    store.set("token", token)
-    // let encryptedToken = safeStorage.encryptString(token)
-    // console.log("Encrypted token should look like " + JSON.stringify(encryptedToken))
-    // store.set("token", JSON.stringify(encryptedToken))
-    // console.log("Decrypted token should look like " + safeStorage.decryptString(encryptedToken))
+    let encryptedToken = safeStorage.encryptString(token).toString('latin1')
+    console.log(encryptedToken)
+    store.set("token", encryptedToken)
 }
 
 function readToken() {
     if (store.get("token") == undefined)
         return ``
     else {
-        // console.log(JSON.parse(store.get("token")))
-        // return (safeStorage.decryptString(JSON.parse(store.get("token"))))
-        return (store.get("token"))
+        let decryptedToken = safeStorage.decryptString(Buffer.from(store.get("token"), "latin1"))
+        console.log(decryptedToken)
+        return decryptedToken
     }
 }
 
