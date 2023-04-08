@@ -7,57 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Slack on Keys</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <h1>Slack on Keys</h1>
     <p><b>Super fast Slack actions from any app, with keyboard shortcuts</b></p>
 
-    <hr />
-
-    <br />
-
     <div>
         <label for="">Slack token</label>
         <input placeholder="Starts with xoxp-" id="i-slack-token" />
     </div>
 
-    <br />
 
-    <hr />
-
-    <br />
-    
-    <div>
-        <p><b>Super fast status</b></p>
-
-        <div>
-            <label for="">Slack status emoji</label>
-            <input placeholder=":speech_balloon:" id="i-status-emoji-text" />
-        </div>
-        <div>
-            <label for="">Slack status text</label>
-            <input placeholder="Working remotely" id="i-status-text" />
-        </div>
-
-        <div>
-            <label for="">Slack status expiry in minutes</label>
-            <input type="number" placeholder="0" id="i-status-expiry-text" />
-        </div>
-    </div>
-    <br />
-
-    <hr />
-
-    <br />
-
-    <div>
-        <p><b>Super fast pausing/resuming notification</b></p>
-        <div>
-            <label for="">Pause notifications until, in-minutes</label>
-            <input type="number" placeholder="Pause notifications until (in-minutes)" id="i-dnd-expiry-text" />
-        </div>
-    </div>
 
     <br />
 
@@ -65,12 +27,45 @@
 
     <br />
 
-    <div>
-        <p><b>Super fast active/inactive</b></p>
-    </div>
+    <section id="presence">
+        <h4>Super fast active and away</h4>
+        <div class="flex-container">
+            <div class="left"></div>
+            <div class="right"></div>
+        </div>
+    </section>
+    <br />
 
-    <button id="b-save">Save and slide to background</button>
+    <hr />
 
+
+    <section id="dnd">
+        <h4>Super fast pause and resume notifications</h4>
+        <div class="flex-container">
+            <div class="left"></div>
+            <div class="right"></div>
+        </div>
+    </section>
+    <br />
+
+    <hr />
+
+
+    <section id="status">
+        <h4>Super fast set and clear status</h4>
+        <div class="flex-container">
+            <div class="left"></div>
+            <div class="right"></div>
+        </div>
+    </section>
+
+    <br />
+
+    <hr />
+
+
+
+    <button id="b-save">Run in background</button>
 
     <script src="./script.js"></script>
 </body>

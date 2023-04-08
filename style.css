@@ -1,0 +1,30 @@
+body {
+    font-size: 1rem;
+}
+
+.flex-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    /* padding: 2rem; */
+    gap: 1rem;
+}
+
+.left,
+.right {
+    border-right: 1px solid black;
+    flex-basis: 1;
+}
+
+input {
+    border-radius: 0.25rem;
+    border: 2px lightgrey solid;
+    padding: 0.5rem;
+}
+
+label {
+    display: inline-block;
+}
+
+.shortcut-key {
+    width: 0.5rem;
+}
