@@ -128,43 +128,34 @@ function minimise() {
 }
 
 // Slack functions
-function alterStatus(type) {
+
+function setPresence(type) {
     let token = readToken();
-    let statusExpiryText = parseInt(store.get("statusExpiryText"))
-    let statusExpiry = statusExpiryText > 0 ? (statusExpiryText * 60) + Date.now() / 1000 : 0;
-    let raw = JSON.stringify({
-        profile: {
-            status_emoji: type == "set" ? store.get("statusEmojiText") : ``,
-            status_text: type == "set" ? store.get("statusText") : ``,
-            status_expiration: statusExpiry,
-        }
-    })
 
     let requestOptions = {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": `Bearer ${token}`
         },
-        body: raw,
         redirect: "follow",
     };
 
-    fetch("https://slack.com/api/users.profile.set", requestOptions)
+    fetch(`https://slack.com/api/users.setPresence?presence=${type}&pretty=1`, requestOptions)
     // .then((response) => response.text())
     // .then((result) => {
     //     // console.log("Slack status altered")
     // })
     // .catch((error) => console.log("error", error));
     new Notification({
-        title: `Slack status ${type == "set" ? `set ${statusExpiryText > 0 ? `for the next ${statusExpiryText} minute${statusExpiryText == 1 ? `` : `s`}` : ``}` : `cleared`}`,
-        body: type == "set" ? `Communication is the key, isn't it?` : `Alrighty!`
+        title: type == "auto" ? `You are now set to active` : `You are now set to away`,
+        body: type == "auto" ? `Let's go!` : `Go get some fresh air!`
     }).show();
 }
 
 function setDND() {
     let token = readToken();
-    let DNDExpiry = parseInt(store.get("DNDExpiryText"))
+    let DNDExpiry = parseInt(store.get("dnd.set")[0]["dndExpiry"])
 
     if (!DNDExpiry) {
         new Notification({
@@ -219,29 +210,45 @@ function clearDND() {
     }).show();
 }
 
-function setPresence(type) {
+
+function alterStatus(type) {
     let token = readToken();
+    let statusEmojiText = store.get("status.set")[0]["statusEmojiText"]
+    let statusText = store.get("status.set")[0]["statusText"]
+    let statusExpiryText = parseInt(store.get("status.set")[0]["statusExpiry"])
+    let statusExpiry = statusExpiryText > 0 ? (statusExpiryText * 60) + Date.now() / 1000 : 0;
+    let raw = JSON.stringify({
+        profile: {
+            status_emoji: type == "set" ? statusEmojiText : ``,
+            status_text: type == "set" ? statusText : ``,
+            status_expiration: statusExpiry,
+        }
+    })
 
     let requestOptions = {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         },
+        body: raw,
         redirect: "follow",
     };
 
-    fetch(`https://slack.com/api/users.setPresence?presence=${type}&pretty=1`, requestOptions)
+    fetch("https://slack.com/api/users.profile.set", requestOptions)
     // .then((response) => response.text())
     // .then((result) => {
     //     // console.log("Slack status altered")
     // })
     // .catch((error) => console.log("error", error));
     new Notification({
-        title: type == "auto" ? `You are now set to active` : `You are now set to away`,
-        body: type == "auto" ? `Let's go!` : `Go get some fresh air!`
+        title: `Slack status ${type == "set" ? `set ${statusExpiryText > 0 ? `for the next ${statusExpiryText} minute${statusExpiryText == 1 ? `` : `s`}` : ``}` : `cleared`}`,
+        body: type == "set" ? `Communication is the key, isn't it?` : `Alrighty!`
     }).show();
 }
+
+
+
 
 
 
