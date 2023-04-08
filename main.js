@@ -28,6 +28,7 @@ const contextMenu = Menu.buildFromTemplate([
         click: () => {
             if (BrowserWindow.getAllWindows().length === 0) {
                 mainWindow = createWindow()
+                app.dock.show()
             }
             mainWindow.show()
             mainWindow.webContents.once("dom-ready", function () {
@@ -190,7 +191,7 @@ function setDND() {
     // .catch((error) => console.log("error", error));
     new Notification({
         title: `Slack notifications snoozed for ${DNDExpiry} minute${DNDExpiry == 1 ? `` : `s`}`,
-        body: "Pin drop silence is all yours!"
+        body: "Noise cancellation at your service!"
     }).show();
 }
 
