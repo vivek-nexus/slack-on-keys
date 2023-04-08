@@ -13,10 +13,11 @@ let saveButton = document.querySelector("#b-save")
 
 // slack token read / store messaging
 ipcRenderer.on("read-slack-token", function (event, token) {
-    slackTokenText.value = token
+    slackTokenText.value = "Saved, but hidden for security"
 })
 slackTokenText.addEventListener("keyup", function (event) {
-    ipcRenderer.send("store-slack-token", slackTokenText.value)
+    if (slackTokenText.value != "Saved, but hidden for security")
+        ipcRenderer.send("store-slack-token", slackTokenText.value)
 })
 
 saveButton.addEventListener("click", () => {
@@ -83,16 +84,16 @@ function ActionItem(section, type, index) {
     // initial render
     shortcutKeyInput.classList.add("shortcut-key")
     shortcutKeyInput.value = readValueFromStore(`${section}.${type}`)[index]["shortcutKey"]
-    shortcutKeyInputLabel.innerText = " " + type + " Shortcut key Ctrl +"
+    shortcutKeyInputLabel.innerText = " Ctrl +"
     if (type != "clear" && section != "presence") {
         valueInput1.value = readValueFromStore(`${section}.${type}`)[index][section == "dnd" ? `dndExpiry` : `statusEmojiText`]
-        valueInput1Label.innerText = " " + type + (section == "dnd" ? `expiry` : ` Status emoji`)
+        valueInput1Label.innerText = (section == "dnd" ? `expiry` : ` Status emoji`)
 
         if (section == "status") {
             valueInput2.value = readValueFromStore(`${section}.${type}`)[index]["statusText"]
             valueInput3.value = readValueFromStore(`${section}.${type}`)[index]["statusExpiry"]
-            valueInput2Label.innerText = " " + type + " Status text"
-            valueInput3Label.innerText = " " + type + " Status expiry"
+            valueInput2Label.innerText = " Status text"
+            valueInput3Label.innerText = " Status expiry"
         }
     }
 
@@ -123,6 +124,7 @@ function ActionItem(section, type, index) {
 
     // change events
     shortcutKeyInput.addEventListener("keyup", function (event) {
+        if (event.target.value) ipcRenderer.send("refresh-shortcuts")
         const currentObject = readValueFromStore(`${section}.${type}`)[index]
         let array = readValueFromStore(`${section}.${type}`)
         let modifiedObject = { ...currentObject, "shortcutKey": event.target.value }
@@ -131,6 +133,7 @@ function ActionItem(section, type, index) {
     })
     if (type != "clear" && section != "presence") {
         valueInput1.addEventListener("keyup", function (event) {
+            if (event.target.value) ipcRenderer.send("refresh-shortcuts")
             const key = (section == "dnd" ? `dndExpiry` : `statusEmojiText`)
             const currentObject = readValueFromStore(`${section}.${type}`)[index]
             let array = readValueFromStore(`${section}.${type}`)
@@ -145,6 +148,7 @@ function ActionItem(section, type, index) {
 
         if (section == "status") {
             valueInput2.addEventListener("keyup", function (event) {
+                if (event.target.value) ipcRenderer.send("refresh-shortcuts")
                 const currentObject = readValueFromStore(`${section}.${type}`)[index]
                 let array = readValueFromStore(`${section}.${type}`)
                 let modifiedObject = { ...currentObject, "statusText": event.target.value }
@@ -153,6 +157,7 @@ function ActionItem(section, type, index) {
             })
 
             valueInput3.addEventListener("keyup", function (event) {
+                if (event.target.value) ipcRenderer.send("refresh-shortcuts")
                 const currentObject = readValueFromStore(`${section}.${type}`)[index]
                 let array = readValueFromStore(`${section}.${type}`)
                 let modifiedObject = { ...currentObject, "statusExpiry": event.target.value }

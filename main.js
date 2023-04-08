@@ -84,6 +84,12 @@ ipcMain.on("general-message", function (event, message) {
     console.log("Message: " + message)
 })
 
+ipcMain.on("refresh-shortcuts", () => {
+    setTimeout(() => {
+        setGlobalShortCuts()
+    }, 500);
+})
+
 
 
 
@@ -93,7 +99,7 @@ ipcMain.on("general-message", function (event, message) {
 function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 800,
-        height: 800,
+        height: 900,
         webPreferences: {
             // preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
@@ -110,12 +116,12 @@ function createWindow() {
 function setGlobalShortCuts(mainWindow) {
     globalShortcut.unregisterAll()
 
-    globalShortcut.register('ctrl+1', () => alterStatus("set"))
-    globalShortcut.register('ctrl+shift+1', () => alterStatus("clear"))
-    globalShortcut.register('ctrl+2', () => setDND())
-    globalShortcut.register('ctrl+shift+2', () => clearDND())
-    globalShortcut.register('ctrl+3', () => setPresence("auto"))
-    globalShortcut.register('ctrl+shift+3', () => setPresence("away"))
+    globalShortcut.register(`ctrl+${store.get("presence.set")[0]["shortcutKey"]}`, () => setPresence("auto"))
+    globalShortcut.register(`ctrl+${store.get("presence.clear")[0]["shortcutKey"]}`, () => setPresence("away"))
+    globalShortcut.register(`ctrl+${store.get("dnd.set")[0]["shortcutKey"]}`, () => setDND())
+    globalShortcut.register(`ctrl+${store.get("dnd.clear")[0]["shortcutKey"]}`, () => clearDND())
+    globalShortcut.register(`ctrl+${store.get("status.set")[0]["shortcutKey"]}`, () => alterStatus("set"))
+    globalShortcut.register(`ctrl+${store.get("status.clear")[0]["shortcutKey"]}`, () => alterStatus("clear"))
 }
 
 function minimise() {

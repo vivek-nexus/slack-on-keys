@@ -29,7 +29,7 @@ const defaultValues = {
         "set": [
             {
                 "shortcutKey": "5",
-                "statusEmojiText": ":eyes:",
+                "statusEmojiText": ":speech_balloon:",
                 "statusText": "Working remotely",
                 "statusExpiry": "15"
             }
