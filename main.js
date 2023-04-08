@@ -63,7 +63,7 @@ app.whenReady().then(() => {
 
     setGlobalShortCuts(mainWindow)
 
-    tray = new Tray(path.join(__dirname, 'icon.png'))
+    tray = new Tray(path.join(__dirname, 'icon-32.png'))
     tray.setToolTip('This is my application.')
     tray.setContextMenu(contextMenu)
 })
@@ -100,6 +100,7 @@ function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 900,
+        icon: path.join(__dirname, './icon.png'),
         webPreferences: {
             // preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
