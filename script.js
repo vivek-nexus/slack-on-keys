@@ -13,7 +13,8 @@ let saveButton = document.querySelector("#b-save")
 
 // slack token read / store messaging
 ipcRenderer.on("read-slack-token", function (event, token) {
-    slackTokenText.value = "Saved but encrypted"
+    if (token != "")
+        slackTokenText.value = "Saved but encrypted"
 })
 slackTokenText.addEventListener("keyup", function (event) {
     if (slackTokenText.value != "Saved but encrypted")
