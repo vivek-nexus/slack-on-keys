@@ -49,6 +49,8 @@ const store = new Store()
 
 // processes
 app.whenReady().then(() => {
+    loadDefaultValues()
+
     mainWindow = createWindow()
 
     app.on('activate', () => {
@@ -98,8 +100,8 @@ ipcMain.on("refresh-shortcuts", () => {
 // functions
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 900,
+        width: 1280,
+        height: 800,
         icon: path.join(__dirname, './icon.png'),
         webPreferences: {
             // preload: path.join(__dirname, 'preload.js'),
@@ -260,7 +262,54 @@ function alterStatus(type) {
 
 
 
-
+function loadDefaultValues() {
+    if (store.has("token"))
+        return
+    else
+        store.store = {
+            "token": "",
+            "presence": {
+                "set": [
+                    {
+                        "shortcutKey": "1"
+                    }
+                ],
+                "clear": [
+                    {
+                        "shortcutKey": "2"
+                    }
+                ]
+            },
+            "dnd": {
+                "set": [
+                    {
+                        "shortcutKey": "3",
+                        "dndExpiry": "60"
+                    }
+                ],
+                "clear": [
+                    {
+                        "shortcutKey": "4"
+                    }
+                ]
+            },
+            "status": {
+                "set": [
+                    {
+                        "shortcutKey": "5",
+                        "statusEmojiText": ":speech_balloon:",
+                        "statusText": "Away",
+                        "statusExpiry": "15"
+                    }
+                ],
+                "clear": [
+                    {
+                        "shortcutKey": "6"
+                    }
+                ]
+            }
+        };
+}
 
 function writeToken(token) {
     let encryptedToken = safeStorage.encryptString(token).toString('latin1')

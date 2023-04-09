@@ -53,11 +53,13 @@ function writeValueToStore(key, value) {
 function ActionItem(section, type, index) {
     let sectionDOM = document.querySelector(`#${section}`)
 
+    let actionItemContainer
     let shortcutKeyInputContainer, shortcutKeyInputLabel, shortcutKeyInput;
     let valueInput1Container, valueInput1Label, valueInput1
     let valueInput2Container, valueInput2Label, valueInput2
     let valueInput3Container, valueInput3Label, valueInput3
 
+    actionItemContainer = document.createElement("div")
     shortcutKeyInputContainer = document.createElement("div")
     shortcutKeyInputLabel = document.createElement("label")
     shortCutKeyText = document.createElement("p")
@@ -82,44 +84,48 @@ function ActionItem(section, type, index) {
 
 
     // initial render
-    shortcutKeyInput.classList.add("shortcut-key")
+    actionItemContainer.classList.add("d-flex", "align-items-end")
+    shortcutKeyInput.classList.add("shortcut-key-input")
+    shortcutKeyInputLabel.classList.add("shortcut-key-label")
     shortcutKeyInput.value = readValueFromStore(`${section}.${type}`)[index]["shortcutKey"]
     shortcutKeyInputLabel.innerText = " Ctrl +"
     if (type != "clear" && section != "presence") {
         valueInput1.value = readValueFromStore(`${section}.${type}`)[index][section == "dnd" ? `dndExpiry` : `statusEmojiText`]
-        valueInput1Label.innerText = (section == "dnd" ? `expiry` : ` Status emoji`)
+        valueInput1Label.innerText = (section == "dnd" ? `Pause till (min)` : ` Status emoji`)
 
         if (section == "status") {
             valueInput2.value = readValueFromStore(`${section}.${type}`)[index]["statusText"]
             valueInput3.value = readValueFromStore(`${section}.${type}`)[index]["statusExpiry"]
             valueInput2Label.innerText = " Status text"
-            valueInput3Label.innerText = " Status expiry"
+            valueInput3Label.innerText = " Status expiry (min)"
         }
     }
 
     shortcutKeyInputContainer.appendChild(shortcutKeyInputLabel)
     shortcutKeyInputContainer.appendChild(shortcutKeyInput)
-    sectionDOM.children[1].children[type == "set" ? 0 : 1].appendChild(shortcutKeyInputContainer)
+    actionItemContainer.appendChild(shortcutKeyInputContainer)
+
 
     if (type != "clear" && section != "presence") {
         valueInput1Container.appendChild(valueInput1Label)
         valueInput1Container.appendChild(valueInput1)
-        sectionDOM.children[1].children[type == "set" ? 0 : 1].appendChild(valueInput1Container)
+        actionItemContainer.appendChild(valueInput1Container)
 
         if (section == "status") {
             valueInput1Container.appendChild(valueInput1Label)
             valueInput1Container.appendChild(valueInput1)
-            sectionDOM.children[1].children[type == "set" ? 0 : 1].appendChild(valueInput1Container)
+            actionItemContainer.appendChild(valueInput1Container)
 
             valueInput2Container.appendChild(valueInput2Label)
             valueInput2Container.appendChild(valueInput2)
-            sectionDOM.children[1].children[type == "set" ? 0 : 1].appendChild(valueInput2Container)
+            actionItemContainer.appendChild(valueInput2Container)
 
             valueInput3Container.appendChild(valueInput3Label)
             valueInput3Container.appendChild(valueInput3)
-            sectionDOM.children[1].children[type == "set" ? 0 : 1].appendChild(valueInput3Container)
+            actionItemContainer.appendChild(valueInput3Container)
         }
     }
+    sectionDOM.children[1].children[type == "set" ? 0 : 1].appendChild(actionItemContainer)
 
 
     // change events

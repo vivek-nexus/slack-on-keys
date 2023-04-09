@@ -1,14 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap');
+
 body {
     font-size: 1rem;
+    font-family: 'Electrolize', sans-serif;
 }
 
 p {
     margin-bottom: 0;
 }
 
-h1,
-h4 {
-    margin-bottom: 0;
+h5 {
+    text-decoration: underline;
 }
 
 .flex-container {
@@ -27,13 +29,22 @@ h4 {
 input {
     border-radius: 0.25rem;
     border: 2px lightgrey solid;
-    padding: 0.5rem;
+    padding: 0.25rem;
+    margin-right: 0.5rem;
+    width: 11rem;
 }
 
 label {
-    display: inline-block;
+    display: block;
+    color: gray;
 }
 
-.shortcut-key {
-    width: 0.5rem;
+.shortcut-key-label {
+    display: inline;
+    color: black;
+}
+
+.shortcut-key-input {
+    width: 2rem;
+    padding: 0.25rem 0.5rem;
 }
