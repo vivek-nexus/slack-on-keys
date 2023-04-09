@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Electrolize&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope&display=swap');
 
 body {
     font-size: 1rem;
-    font-family: 'Electrolize', sans-serif;
+    font-family: 'Manrope', sans-serif;
 }
 
 p {
@@ -26,18 +26,7 @@ h5 {
     flex-basis: 1;
 }
 
-input {
-    border-radius: 0.25rem;
-    border: 2px lightgrey solid;
-    padding: 0.25rem;
-    margin-right: 0.5rem;
-    width: 11rem;
-}
 
-label {
-    display: block;
-    color: gray;
-}
 
 .shortcut-key-label {
     display: inline;
@@ -45,6 +34,8 @@ label {
 }
 
 .shortcut-key-input {
-    width: 2rem;
-    padding: 0.25rem 0.5rem;
+    width: 2.5rem;
+    padding: 1rem .75rem;
+    border-radius: 6px;
+    border: 0.8114px solid #dee2e6;
 }
