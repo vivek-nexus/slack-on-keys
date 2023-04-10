@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray, safeStorage, ipcMain, Notification } = require('electron')
+const { app, BrowserWindow, Menu, Tray, safeStorage, ipcMain, Notification, shell } = require('electron')
 const { globalShortcut } = require('electron/main')
 const path = require('path')
 const Store = require('electron-store');
@@ -62,6 +62,10 @@ app.whenReady().then(() => {
     mainWindow.webContents.once("dom-ready", function () {
         mainWindow.webContents.send("read-slack-token", readToken())
     })
+    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+        shell.openExternal(url);
+        return { action: 'deny' };
+    });
 
     setGlobalShortCuts(mainWindow)
 
@@ -100,8 +104,8 @@ ipcMain.on("refresh-shortcuts", () => {
 // functions
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 700,
-        height: 780,
+        width: 900,
+        height: 820,
         icon: path.join(__dirname, './icon.png'),
         webPreferences: {
             // preload: path.join(__dirname, 'preload.js'),

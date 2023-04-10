@@ -1,40 +1,71 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap');
+
+:root {
+    --primary-900: #463f75;
+    --primary-700: #4e4982;
+    --primary-600: #57538e;
+    --primary-400: #7373a6;
+    --primary-100: #cbcde0;
+    --font: rgb(234, 234, 234);
+}
+
+.cursor-none {
+    cursor: none;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
 
 body {
     font-size: 1rem;
     font-family: 'Manrope', sans-serif;
+    background-color: #382F5D;
+    color: var(--font);
 }
 
 p {
     margin-bottom: 0;
+    color: var(--font);
 }
 
-section {
-    /* margin: 2rem 0rem; */
+a {
+    color: var(--font);
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-offset: 8px;
 }
 
-h5 {
-    /* text-decoration: underline; */
+.btn-outline-primary {
+    color: var(--font);
+    border: 1px solid var(--font);
 }
 
-.left,
-.right {
-    border-right: 1px solid black;
-    flex-basis: 1;
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+    color: var(--font);
+    border: 1px solid var(--font) !important;
+    background-color: var(--primary-400) !important;
 }
+
 
 input {
-    /* border: none !important; */
+    border: none !important;
     /* border-radius: 2px !important; */
-    background-color: transparent !important;
+    background-color: var(--primary-600) !important;
     /* border-bottom: 2px solid blue !important; */
-    /* color: blue !important; */
+    color: var(--font) !important;
 }
 
-label,
-label::after {
-    background-color: transparent !important;
+input:focus {
+    color: var(--font);
+    box-shadow: none !important;
+    font-weight: bold;
 }
+
+
 
 .shortcut-key-label {
     display: inline;
@@ -55,4 +86,30 @@ label::after {
     border-radius: 0.25rem;
     /* background-color: #f7f7f7; */
     width: fit-content;
+}
+
+
+label,
+label::after {
+    background-color: transparent !important;
+    color: var(--primary-100) !important;
+}
+
+.accordion-button {
+    background-color: var(--primary-900);
+    color: var(--font);
+    font-weight: bold;
+}
+
+.accordion-button:focus,
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary-900);
+    color: var(--font);
+    font-weight: bold;
+    box-shadow: none;
+}
+
+.accordion-item {
+    border: 1px solid var(--primary-700);
+    background-color: var(--primary-400);
 }
