@@ -100,8 +100,8 @@ ipcMain.on("refresh-shortcuts", () => {
 // functions
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 1280,
-        height: 900,
+        width: 700,
+        height: 780,
         icon: path.join(__dirname, './icon.png'),
         webPreferences: {
             // preload: path.join(__dirname, 'preload.js'),
@@ -125,6 +125,20 @@ function setGlobalShortCuts(mainWindow) {
     globalShortcut.register(`ctrl+${store.get("dnd.clear")[0]["shortcutKey"]}`, () => clearDND())
     globalShortcut.register(`ctrl+${store.get("status.set")[0]["shortcutKey"]}`, () => alterStatus("set"))
     globalShortcut.register(`ctrl+${store.get("status.clear")[0]["shortcutKey"]}`, () => alterStatus("clear"))
+
+    // globalShortcut.register(`ctrl+${store.get("presence.set")[0]["shortcutKey"]}`, () => setPresence("auto"))
+    // globalShortcut.register(`ctrl+${store.get("presence.clear")[0]["shortcutKey"]}`, () => setPresence("away"))
+    // globalShortcut.register(`ctrl+${store.get("dnd.clear")[0]["shortcutKey"]}`, () => clearDND())
+    // globalShortcut.register(`ctrl+${store.get("status.clear")[0]["shortcutKey"]}`, () => alterStatus("clear"))
+
+    // for (let i = 0; i < store.get("dnd.set").length; i++) {
+    //     globalShortcut.register(`ctrl+${store.get("dnd.set")[i]["shortcutKey"]}`, () => setDND())
+    // }
+    // for (let i = 0; i < store.get("status.set").length; i++) {
+    //     globalShortcut.register(`ctrl+${store.get("status.set")[i]["shortcutKey"]}`, () => alterStatus("set"))
+    // }
+
+
 }
 
 function minimise() {
@@ -284,7 +298,7 @@ function loadDefaultValues() {
                 "set": [
                     {
                         "shortcutKey": "3",
-                        "dndExpiry": "60"
+                        "dndExpiry": "30"
                     }
                 ],
                 "clear": [
@@ -297,9 +311,9 @@ function loadDefaultValues() {
                 "set": [
                     {
                         "shortcutKey": "5",
-                        "statusEmojiText": ":speech_balloon:",
-                        "statusText": "Away",
-                        "statusExpiry": "15"
+                        "statusEmojiText": ":pizza:",
+                        "statusText": "Lunch",
+                        "statusExpiry": "60"
                     }
                 ],
                 "clear": [

@@ -8,6 +8,8 @@ const store = new Store()
 // DOM
 let slackTokenText = document.querySelector("#i-slack-token")
 let saveButton = document.querySelector("#b-save")
+let dndAddAnotherButton = document.querySelector("#b-dnd-set")
+let statusAddAnotherButton = document.querySelector("#b-status-set")
 
 
 
@@ -30,10 +32,44 @@ saveButton.addEventListener("click", () => {
 
 ActionItem("presence", "set", 0)
 ActionItem("presence", "clear", 0)
-ActionItem("dnd", "set", 0)
 ActionItem("dnd", "clear", 0)
-ActionItem("status", "set", 0)
 ActionItem("status", "clear", 0)
+
+for (let i = 0; i < readValueFromStore("dnd.set").length; i++) {
+    ActionItem("dnd", "set", i)
+}
+
+for (let i = 0; i < readValueFromStore("status.set").length; i++) {
+    ActionItem("status", "set", i)
+}
+
+dndAddAnotherButton.addEventListener("click", function () {
+    let currentItems = readValueFromStore("dnd.set")
+    console.log(currentItems.length)
+
+    writeValueToStore("dnd.set", [...currentItems, {
+        "shortcutKey": "",
+        "dndExpiry": ""
+    }])
+
+    ActionItem("dnd", "set", currentItems.length)
+})
+
+statusAddAnotherButton.addEventListener("click", function () {
+    let currentItems = readValueFromStore("status.set")
+    console.log(currentItems.length)
+
+    writeValueToStore("status.set", [...currentItems, {
+        "shortcutKey": "",
+        "statusEmojiText": "",
+        "statusText": "",
+        "statusExpiry": ""
+    }])
+
+    ActionItem("status", "set", currentItems.length)
+})
+
+
 
 
 function readValueFromStore(key) {
@@ -57,9 +93,10 @@ function ActionItem(section, type, index) {
     let actionItemContainer, shortcutKeyInput, valueInput1, valueInput2, valueInput3
 
     actionItemContainer = document.createElement("div")
+    actionItemContainer.classList.add("action-item-container")
 
     const shortcutKeyInnerHTML = `
-    <div class="${type == "set" && (section == "dnd" || section == "status") ? `` : ``}">
+    <div class="col-auto me-2 ${type == "set" && (section == "dnd" || section == "status") ? `` : ``}">
         <label id="shortcut-key-label-${section}-${type}-${index}" class="shortcut-key-label"> Ctrl +</label>
         <input id="shortcut-key-input-${section}-${type}-${index}" class="shortcut-key-input"/>
     </div>`
@@ -106,7 +143,9 @@ function ActionItem(section, type, index) {
         }
     }
 
-    sectionDOM.children[1].children[type == "set" ? 0 : 1].appendChild(actionItemContainer)
+    let parent = sectionDOM.children[0].children[type == "set" ? 0 : 1]
+
+    parent.insertBefore(actionItemContainer, (type == "set" && section != "presence" ? parent.lastElementChild : null))
 
     shortcutKeyInput = document.querySelector(`#shortcut-key-input-${section}-${type}-${index}`)
     if (section == "dnd" && type == "set") {
@@ -181,14 +220,3 @@ function ActionItem(section, type, index) {
 }
 
 
-
-function getLabel(section, type) {
-    switch (`${section}+${type}`) {
-        case "presence+set":
-            return ""
-            break;
-
-        default:
-            break;
-    }
-}

@@ -13,44 +13,128 @@
 </head>
 
 <body class="p-3">
-    <img class="mx-auto d-block" src="./icon.png" width="64px" height="64px" alt="app-icon">
-    <h1 class="text-center">Slack on Keys</h1>
-    <p class="text-center"><b>Super fast Slack actions from any app, with keyboard shortcuts</b></p>
-    <div class="d-flex justify-content-between align-items-center">
-        <div class="">
-            <div class="flex-grow-1 form-floating">
-                <input placeholder="Starts with xoxp-" id="i-slack-token" class="form-control w-auto" />
-                <label for="">Paste slack token</label>
+
+    <section class="mb-5">
+        <img class="mx-auto d-block" src="./icon.png" width="64px" height="64px" alt="app-icon">
+        <h1 class="text-center">Slack on Keys</h1>
+        <p class="text-center"><b>Super fast Slack actions from any app, with keyboard shortcuts</b></p>
+    </section>
+
+    <!-- <hr /> -->
+
+    <section class="my-5">
+        <!-- <h5>GET STARTED</h5> -->
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1 form-floating">
+                    <input placeholder="Starts with xoxp-" id="i-slack-token" class="form-control w-auto" />
+                    <label for="">Paste slack token</label>
+                </div>
+                <div class="mt-2 mx-4">
+                    <a href="https://slack.com" id="b-save"
+                        class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover fw-bold">Get
+                        your Slack token ↗</a>
+                </div>
             </div>
-            <div>
-                <button id="b-save" type="button" class="btn btn-primary">Get your Slack token</button>
+            <!-- <div>
+            <button id="b-save" type="button" class="btn btn-outline-primary btn-sm">Run in background</button>
+        </div> -->
+        </div>
+    </section>
+
+    <!-- <hr class="my-5" /> -->
+
+    <div class="accordion my-5" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    ACTIVE AND AWAY ACTIONS
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <section id="presence">
+                        <!-- <h5>ACTIVE AND AWAY ACTIONS</h5> -->
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <p class="mb-2"><b>Set as active</b></p>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <p class="mb-2"><b>Set as away</b></p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
-        <div>
-            <button id="b-save" type="button" class="btn btn-outline-primary btn-sm">Run in background</button>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    NOTIFICATION ACTIONS
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <section id="dnd">
+                        <!-- <h5>NOTIFICATION ACTIONS</h5> -->
+                        <div class="row">
+                            <div class="col-12 mb-5">
+                                <p class="mb-2"><b>Pause notifications</b></p>
+                                <button id="b-dnd-set" type="button" class="btn btn-outline-primary btn-sm mt-2">Add
+                                    another</button>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <p class="mb-2"><b>Resume notifications</b></p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    STATUS ACTIONS
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <section id="status">
+                        <!-- <h5>STATUS ACTIONS</h5> -->
+                        <div class="row">
+                            <div class="col-12 mb-5">
+                                <p class="mb-2"><b>Set status</b></p>
+                                <button id="b-status-set" type="button" class="btn btn-outline-primary btn-sm mt-2">Add
+                                    another</button>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <p class="mb-2"><b>Clear status</b></p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
     </div>
 
 
 
-    <br />
 
-    <hr />
-
-    <br />
-
+    <!-- <hr />
     <section id="presence">
         <h5>ACTIVE AND AWAY ACTIONS</h5>
         <div class="row">
-            <div class="col-10">
-                <p><b>Set as active</b></p>
+            <div class="col-6 mb-3">
+                <p class="mb-2"><b>Set as active</b></p>
             </div>
-            <div class="col-2">
-                <p><b>Set as away</b></p>
+            <div class="col-6 mb-3">
+                <p class="mb-2"><b>Set as away</b></p>
             </div>
         </div>
     </section>
-    <br />
 
     <hr />
 
@@ -58,15 +142,15 @@
     <section id="dnd">
         <h5>NOTIFICATION ACTIONS</h5>
         <div class="row">
-            <div class="col-10">
-                <p><b>Pause notifications</b></p>
+            <div class="col-6 mb-2">
+                <p class="mb-2"><b>Pause notifications</b></p>
+                <button type="button" class="btn btn-outline-primary btn-sm mt-2">Add another</button>
             </div>
-            <div class="col-2">
-                <p class="mb-4"><b>Resume notifications</b></p>
+            <div class="col-6 mb-2">
+                <p class="mb-2"><b>Resume notifications</b></p>
             </div>
         </div>
     </section>
-    <br />
 
     <hr />
 
@@ -74,14 +158,22 @@
     <section id="status">
         <h5>STATUS ACTIONS</h5>
         <div class="row">
-            <div class="col-10">
-                <p><b>Set status</b></p>
+            <div class="col-12 mb-2">
+                <p class="mb-2"><b>Set status</b></p>
+                <button type="button" class="btn btn-outline-primary btn-sm mt-2">Add another</button>
             </div>
-            <div class="col-2">
-                <p class="mb-4"><b>Clear status</b></p>
+            <div class="col-12 mb-2">
+                <p class="mb-2"><b>Clear status</b></p>
             </div>
         </div>
-    </section>
+    </section> -->
+
+    <!-- <hr /> -->
+
+    <div class="text-center">
+        <button id="b-save" type="button" class="btn btn-outline-primary btn-sm">Minimise to
+            background</button>
+    </div>
 
 
 

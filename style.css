@@ -9,15 +9,12 @@ p {
     margin-bottom: 0;
 }
 
-h5 {
-    text-decoration: underline;
+section {
+    /* margin: 2rem 0rem; */
 }
 
-.flex-container {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    /* padding: 2rem; */
-    gap: 1rem;
+h5 {
+    /* text-decoration: underline; */
 }
 
 .left,
@@ -26,16 +23,36 @@ h5 {
     flex-basis: 1;
 }
 
+input {
+    /* border: none !important; */
+    /* border-radius: 2px !important; */
+    background-color: transparent !important;
+    /* border-bottom: 2px solid blue !important; */
+    /* color: blue !important; */
+}
 
+label,
+label::after {
+    background-color: transparent !important;
+}
 
 .shortcut-key-label {
     display: inline;
     color: black;
 }
 
+
 .shortcut-key-input {
     width: 2.5rem;
     padding: 1rem .75rem;
-    border-radius: 6px;
     border: 0.8114px solid #dee2e6;
+    border-radius: 6px;
+}
+
+.action-item-container {
+    padding: 0rem 0.5rem 0.5rem 0.5rem;
+    /* border-left: 4px solid blue; */
+    border-radius: 0.25rem;
+    /* background-color: #f7f7f7; */
+    width: fit-content;
 }
