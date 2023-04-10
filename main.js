@@ -121,22 +121,15 @@ function setGlobalShortCuts(mainWindow) {
 
     globalShortcut.register(`ctrl+${store.get("presence.set")[0]["shortcutKey"]}`, () => setPresence("auto"))
     globalShortcut.register(`ctrl+${store.get("presence.clear")[0]["shortcutKey"]}`, () => setPresence("away"))
-    globalShortcut.register(`ctrl+${store.get("dnd.set")[0]["shortcutKey"]}`, () => setDND())
     globalShortcut.register(`ctrl+${store.get("dnd.clear")[0]["shortcutKey"]}`, () => clearDND())
-    globalShortcut.register(`ctrl+${store.get("status.set")[0]["shortcutKey"]}`, () => alterStatus("set"))
-    globalShortcut.register(`ctrl+${store.get("status.clear")[0]["shortcutKey"]}`, () => alterStatus("clear"))
+    globalShortcut.register(`ctrl+${store.get("status.clear")[0]["shortcutKey"]}`, () => alterStatus("clear", 0))
 
-    // globalShortcut.register(`ctrl+${store.get("presence.set")[0]["shortcutKey"]}`, () => setPresence("auto"))
-    // globalShortcut.register(`ctrl+${store.get("presence.clear")[0]["shortcutKey"]}`, () => setPresence("away"))
-    // globalShortcut.register(`ctrl+${store.get("dnd.clear")[0]["shortcutKey"]}`, () => clearDND())
-    // globalShortcut.register(`ctrl+${store.get("status.clear")[0]["shortcutKey"]}`, () => alterStatus("clear"))
-
-    // for (let i = 0; i < store.get("dnd.set").length; i++) {
-    //     globalShortcut.register(`ctrl+${store.get("dnd.set")[i]["shortcutKey"]}`, () => setDND())
-    // }
-    // for (let i = 0; i < store.get("status.set").length; i++) {
-    //     globalShortcut.register(`ctrl+${store.get("status.set")[i]["shortcutKey"]}`, () => alterStatus("set"))
-    // }
+    for (let i = 0; i < store.get("dnd.set").length; i++) {
+        globalShortcut.register(`ctrl+${store.get("dnd.set")[i]["shortcutKey"]}`, () => setDND(i))
+    }
+    for (let i = 0; i < store.get("status.set").length; i++) {
+        globalShortcut.register(`ctrl+${store.get("status.set")[i]["shortcutKey"]}`, () => alterStatus("set", i))
+    }
 
 
 }
@@ -176,9 +169,9 @@ function setPresence(type) {
     }).show();
 }
 
-function setDND() {
+function setDND(index) {
     let token = readToken();
-    let DNDExpiry = parseInt(store.get("dnd.set")[0]["dndExpiry"])
+    let DNDExpiry = parseInt(store.get("dnd.set")[index]["dndExpiry"])
 
     if (!DNDExpiry) {
         new Notification({
@@ -234,11 +227,11 @@ function clearDND() {
 }
 
 
-function alterStatus(type) {
+function alterStatus(type, index) {
     let token = readToken();
-    let statusEmojiText = store.get("status.set")[0]["statusEmojiText"]
-    let statusText = store.get("status.set")[0]["statusText"]
-    let statusExpiryText = parseInt(store.get("status.set")[0]["statusExpiry"])
+    let statusEmojiText = store.get("status.set")[index]["statusEmojiText"]
+    let statusText = store.get("status.set")[index]["statusText"]
+    let statusExpiryText = parseInt(store.get("status.set")[index]["statusExpiry"])
     let statusExpiry = statusExpiryText > 0 ? (statusExpiryText * 60) + Date.now() / 1000 : 0;
     let raw = JSON.stringify({
         profile: {
