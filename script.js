@@ -97,7 +97,7 @@ function ActionItem(section, type, index) {
 
     const shortcutKeyInnerHTML = `
     <div class="col-auto me-2 d-flex align-items-end">
-        <p class="mb-2 me-1">👉 Ctrl + </p>
+        <p class="mb-2 me-1">👉 ${process.platform == 'darwin' ? `control` : `Ctrl`} + </p>
         <div class="form-floating ${type == "set" && (section == "dnd" || section == "status") ? `` : ``}">
             <input id="shortcut-key-input-${section}-${type}-${index}" class="shortcut-key-input form-control" maxLength="1"/>
             <label id="shortcut-key-label-${section}-${type}-${index}" ></label>
