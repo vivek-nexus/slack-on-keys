@@ -37,6 +37,10 @@ a {
     text-underline-offset: 8px;
 }
 
+button:focus {
+    border: none;
+}
+
 .btn-outline-primary {
     color: var(--font);
     border: 1px solid var(--font);

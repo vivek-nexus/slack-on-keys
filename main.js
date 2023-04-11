@@ -164,11 +164,21 @@ function setPresence(type) {
     };
 
     fetch(`https://slack.com/api/users.setPresence?presence=${type}&pretty=1`, requestOptions)
-    // .then((response) => response.text())
-    // .then((result) => {
-    //     // console.log("Slack status altered")
-    // })
-    // .catch((error) => console.log("error", error));
+        .then((result) => {
+            if (result.ok == true) {
+                new Notification({
+                    title: type == "auto" ? `You are now set to active` : `You are now set to away`,
+                    body: type == "auto" ? `Let's go!` : `Go get some fresh air!`
+                }).show();
+            }
+            else {
+                new Notification({
+                    title: `Oops! Could not set to ${type}!`,
+                    body: "Please check your Slack token"
+                }).show();
+            }
+        })
+        .catch((error) => console.log("error", error));
     new Notification({
         title: type == "auto" ? `You are now set to active` : `You are now set to away`,
         body: type == "auto" ? `Let's go!` : `Go get some fresh air!`
@@ -181,8 +191,8 @@ function setDND(index) {
 
     if (!DNDExpiry) {
         new Notification({
-            title: `Oops!`,
-            body: "How long should we pause for?"
+            title: `Oops! Notifications not paused!`,
+            body: "Please check your Slack token or the notification parameters"
         }).show();
         return
     }
@@ -197,15 +207,21 @@ function setDND(index) {
     };
 
     fetch(`https://slack.com/api/dnd.setSnooze?num_minutes=${DNDExpiry}&pretty=1`, requestOptions)
-    // .then((response) => response.text())
-    // .then((result) => {
-    //     // console.log("Slack status altered")
-    // })
-    // .catch((error) => console.log("error", error));
-    new Notification({
-        title: `Slack notifications snoozed for ${DNDExpiry} minute${DNDExpiry == 1 ? `` : `s`}`,
-        body: "Noise cancellation at your service!"
-    }).show();
+        .then((result) => {
+            if (result.ok == true) {
+                new Notification({
+                    title: `Slack notifications paused for ${DNDExpiry} minute${DNDExpiry == 1 ? `` : `s`}`,
+                    body: "Noise cancellation at your service!"
+                }).show();
+            }
+            else {
+                new Notification({
+                    title: `Oops! Notifications not paused!`,
+                    body: "Please check your Slack token or the notification parameters"
+                }).show();
+            }
+        })
+        .catch((error) => console.log("error", error));
 }
 
 function clearDND() {
@@ -221,15 +237,21 @@ function clearDND() {
     };
 
     fetch(`https://slack.com/api/dnd.endSnooze?pretty=1`, requestOptions)
-    // .then((response) => response.text())
-    // .then((result) => {
-    //     // console.log("Slack status altered")
-    // })
-    // .catch((error) => console.log("error", error));
-    new Notification({
-        title: `Slack notifications resumed`,
-        body: "Ding ding ding!"
-    }).show();
+        .then((result) => {
+            if (result.ok == true) {
+                new Notification({
+                    title: `Slack notifications resumed`,
+                    body: "Ding ding ding!"
+                }).show();
+            }
+            else {
+                new Notification({
+                    title: `Oops! Notifications not resumed!`,
+                    body: "Please check your Slack token"
+                }).show();
+            }
+        })
+        .catch((error) => console.log("error", error));
 }
 
 
@@ -258,15 +280,22 @@ function alterStatus(type, index) {
     };
 
     fetch("https://slack.com/api/users.profile.set", requestOptions)
-    // .then((response) => response.text())
-    // .then((result) => {
-    //     // console.log("Slack status altered")
-    // })
-    // .catch((error) => console.log("error", error));
-    new Notification({
-        title: `Slack status ${type == "set" ? `set ${statusExpiryText > 0 ? `for the next ${statusExpiryText} minute${statusExpiryText == 1 ? `` : `s`}` : ``}` : `cleared`}`,
-        body: type == "set" ? `Communication is the key, isn't it?` : `Alrighty!`
-    }).show();
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.ok == true) {
+                new Notification({
+                    title: `Slack status ${type == "set" ? `set ${statusExpiryText > 0 ? `for the next ${statusExpiryText} minute${statusExpiryText == 1 ? `` : `s`}` : ``}` : `cleared`}`,
+                    body: type == "set" ? `Communication is the key, isn't it?` : `Alrighty!`
+                }).show();
+            }
+            else {
+                new Notification({
+                    title: `Oops! Could not set status!`,
+                    body: `Please check your Slack token or the status parameters`
+                }).show();
+            }
+        })
+        .catch((error) => console.log("error", error));
 }
 
 
