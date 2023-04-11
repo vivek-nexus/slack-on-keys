@@ -179,10 +179,6 @@ function setPresence(type) {
             }
         })
         .catch((error) => console.log("error", error));
-    new Notification({
-        title: type == "auto" ? `You are now set to active` : `You are now set to away`,
-        body: type == "auto" ? `Let's go!` : `Go get some fresh air!`
-    }).show();
 }
 
 function setDND(index) {
