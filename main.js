@@ -129,10 +129,12 @@ function setGlobalShortCuts(mainWindow) {
     globalShortcut.register(`ctrl+${store.get("status.clear")[0]["shortcutKey"]}`, () => alterStatus("clear", 0))
 
     for (let i = 0; i < store.get("dnd.set").length; i++) {
-        globalShortcut.register(`ctrl+${store.get("dnd.set")[i]["shortcutKey"]}`, () => setDND(i))
+        if (store.get("dnd.set")[i]["shortcutKey"] != "")
+            globalShortcut.register(`ctrl+${store.get("dnd.set")[i]["shortcutKey"]}`, () => setDND(i))
     }
     for (let i = 0; i < store.get("status.set").length; i++) {
-        globalShortcut.register(`ctrl+${store.get("status.set")[i]["shortcutKey"]}`, () => alterStatus("set", i))
+        if (store.get("status.set")[i]["shortcutKey"] != "")
+            globalShortcut.register(`ctrl+${store.get("status.set")[i]["shortcutKey"]}`, () => alterStatus("set", i))
     }
 
 

@@ -99,7 +99,7 @@ function ActionItem(section, type, index) {
     <div class="col-auto me-2 d-flex align-items-end">
         <p class="mb-2 me-1">👉 Ctrl + </p>
         <div class="form-floating ${type == "set" && (section == "dnd" || section == "status") ? `` : ``}">
-            <input id="shortcut-key-input-${section}-${type}-${index}" class="shortcut-key-input form-control"/>
+            <input id="shortcut-key-input-${section}-${type}-${index}" class="shortcut-key-input form-control" type="number"/>
             <label id="shortcut-key-label-${section}-${type}-${index}" ></label>
         </div>
     </div>`
@@ -113,7 +113,7 @@ function ActionItem(section, type, index) {
         <div class="d-flex align-items-center">
             ${shortcutKeyInnerHTML}
             <div class="form-floating mx-2">
-                <input id="pause-key-input-${section}-${type}-${index}" class="form-control" />
+                <input id="pause-key-input-${section}-${type}-${index}" class="form-control" type="number"/>
                 <label id="pause-key-label-${section}-${type}-${index}"> Pause until (in min)</label>
             </div>
             <div>
@@ -143,7 +143,7 @@ function ActionItem(section, type, index) {
                 <label id="status-text-key-label-${section}-${type}-${index}"> Status text</label>
             </div>
             <div class="form-floating mx-2">
-                <input id="status-expiry-key-input-${section}-${type}-${index}" class="form-control" />
+                <input id="status-expiry-key-input-${section}-${type}-${index}" class="form-control" type="number"/>
                 <label id="status-expiry-key-label-${section}-${type}-${index}">Until (in min)</label>
             </div>
             <div>
@@ -240,7 +240,7 @@ function ActionItem(section, type, index) {
         let array = readValueFromStore(`${section}.${type}`)
         array.splice(index, 1)
         writeValueToStore(`${section}.${type}`, array)
-        parent.children[index].remove()
+        parent.children[index + 1].remove()
     })
 }
 
