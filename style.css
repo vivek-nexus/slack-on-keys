@@ -1,4 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&display=swap');
+@font-face {
+    font-family: "Manrope";
+    src: url("fonts/Manrope-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Manrope";
+    src: url("fonts/Manrope-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
 
 :root {
     --primary-900: #463f75;
