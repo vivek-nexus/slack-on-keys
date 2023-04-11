@@ -28,7 +28,8 @@ const contextMenu = Menu.buildFromTemplate([
         click: () => {
             if (BrowserWindow.getAllWindows().length === 0) {
                 mainWindow = createWindow()
-                // app.dock.show()
+                if (process.platform == 'darwin')
+                    app.dock.show()
             }
             mainWindow.show()
             mainWindow.webContents.once("dom-ready", function () {
