@@ -60,13 +60,6 @@ app.whenReady().then(() => {
         }
     })
 
-    mainWindow.webContents.once("dom-ready", function () {
-        mainWindow.webContents.send("read-slack-token", readToken())
-    })
-    mainWindow.once("focus", function () {
-        mainWindow.webContents.send("read-slack-token", readToken())
-    })
-
     setGlobalShortCuts(mainWindow)
 
     tray = new Tray(path.join(__dirname, 'icon-32.png'))
@@ -76,6 +69,10 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
     minimise()
+})
+
+ipcMain.handle("read-slack-token", function () {
+    return readToken()
 })
 
 ipcMain.on("store-slack-token", function (event, token) {
