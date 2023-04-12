@@ -15,10 +15,15 @@ let generateSlackTokenButton = document.querySelector("#generate-slack-token")
 
 
 // slack token read / store messaging
+ipcRenderer.invoke("read-slack-token").then((token) => {
+    if (token != "")
+        slackTokenText.value = "Saved but encrypted"
+})
 slackTokenText.addEventListener("keyup", function (event) {
     if (slackTokenText.value != "Saved but encrypted")
         ipcRenderer.send("store-slack-token", slackTokenText.value)
 })
+
 
 saveButton.addEventListener("click", () => {
     ipcRenderer.send("minimise");
@@ -30,10 +35,6 @@ generateSlackTokenButton.addEventListener("click", () => {
 
 
 
-ipcRenderer.invoke("read-slack-token").then((token) => {
-    if (token != "")
-        slackTokenText.value = "Saved but encrypted"
-})
 ActionItem("presence", "set", 0)
 ActionItem("presence", "clear", 0)
 ActionItem("dnd", "clear", 0)
@@ -84,8 +85,25 @@ function readValueFromStore(key) {
 }
 
 function writeValueToStore(key, value) {
-    console.log(key + ": " + value)
     store.set(key, value)
+}
+
+function checkIfShortcutIsTaken(key) {
+    let taken = false
+    const storeObject = Object.keys(readValueFromStore(store.store))
+    storeObject.map((storeItem) => {
+        if (storeItem != "token") {
+            readValueFromStore(`${storeItem}.set`).map((shortcutItem) => {
+                if (shortcutItem["shortcutKey"] == key)
+                    taken = true
+            })
+            readValueFromStore(`${storeItem}.clear`).map((shortcutItem) => {
+                if (shortcutItem["shortcutKey"] == key)
+                    taken = true
+            })
+        }
+    })
+    return taken
 }
 
 
@@ -94,7 +112,7 @@ function writeValueToStore(key, value) {
 function ActionItem(section, type, index) {
     let sectionDOM = document.querySelector(`#${section}`)
 
-    let actionItemContainer, shortcutKeyInput, valueInput1, valueInput2, valueInput3, removeButton
+    let actionItemContainer, shortcutKeyInput, errorMessage, valueInput1, valueInput2, valueInput3, removeButton
 
     actionItemContainer = document.createElement("div")
     actionItemContainer.classList.add("action-item-container")
@@ -107,9 +125,18 @@ function ActionItem(section, type, index) {
             <label id="shortcut-key-label-${section}-${type}-${index}" ></label>
         </div>
     </div>`
+    const errorMessageHTML = `
+        <p id="error-message-${section}-${type}-${index}" class="mt-1 mb-2">That key is already taken!</p>`
+    const crossIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-x-lg" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+        </svg>`
 
     if (section == "presence") {
-        actionItemContainer.innerHTML = shortcutKeyInnerHTML
+        actionItemContainer.innerHTML = `
+            ${shortcutKeyInnerHTML}
+            ${errorMessageHTML}
+        `
     }
     else if (section == "dnd") {
         if (type == "set") {
@@ -122,15 +149,17 @@ function ActionItem(section, type, index) {
             </div>
             <div>
                 <button id="dnd-remove-button-${section}-${type}-${index}" type="button" class="btn ${index == 0 ? `invisible cursor-none` : ``}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                    </svg>
+                    ${crossIcon}
                 </button>
             </div>
         </div>
+        ${errorMessageHTML}
         `}
         else {
-            actionItemContainer.innerHTML = shortcutKeyInnerHTML
+            actionItemContainer.innerHTML = `
+                                                ${shortcutKeyInnerHTML}
+                                                ${errorMessageHTML}
+                                            `
         }
     }
     else if (section == "status") {
@@ -152,15 +181,17 @@ function ActionItem(section, type, index) {
             </div>
             <div>
                 <button id="status-remove-button-${section}-${type}-${index}" type="button" class="btn ${index == 0 ? `invisible cursor-none` : ``}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                    </svg>
+                    ${crossIcon}
                 </button>
             </div>
         </div>
+        ${errorMessageHTML}
         `}
         else {
-            actionItemContainer.innerHTML = shortcutKeyInnerHTML
+            actionItemContainer.innerHTML = `
+                                                ${shortcutKeyInnerHTML}
+                                                ${errorMessageHTML}
+                                            `
         }
     }
 
@@ -169,6 +200,7 @@ function ActionItem(section, type, index) {
     parent.insertBefore(actionItemContainer, (type == "set" && section != "presence" ? parent.lastElementChild : null))
 
     shortcutKeyInput = document.querySelector(`#shortcut-key-input-${section}-${type}-${index}`)
+    errorMessage = document.querySelector(`#error-message-${section}-${type}-${index}`)
     if (section == "dnd" && type == "set") {
         valueInput1 = document.querySelector(`#pause-key-input-${section}-${type}-${index}`)
         removeButton = document.querySelector(`#dnd-remove-button-${section}-${type}-${index}`)
@@ -184,6 +216,7 @@ function ActionItem(section, type, index) {
 
 
     // initial render
+    errorMessage.style.display = "none"
     shortcutKeyInput.value = readValueFromStore(`${section}.${type}`)[index]["shortcutKey"]
     if (type != "clear" && section != "presence") {
         valueInput1.value = readValueFromStore(`${section}.${type}`)[index][section == "dnd" ? `dndExpiry` : `statusEmojiText`]
@@ -198,12 +231,22 @@ function ActionItem(section, type, index) {
 
     // change events
     shortcutKeyInput.addEventListener("keyup", function (event) {
-        if (event.target.value) ipcRenderer.send("refresh-shortcuts")
-        const currentObject = readValueFromStore(`${section}.${type}`)[index]
-        let array = readValueFromStore(`${section}.${type}`)
-        let modifiedObject = { ...currentObject, "shortcutKey": event.target.value }
-        array.splice(index, 1, modifiedObject)
-        writeValueToStore(`${section}.${type}`, array)
+        if (event.target.value != "") {
+            if (!checkIfShortcutIsTaken(event.target.value)) {
+                errorMessage.style.display = "none"
+                errorMessage.style.animation = ""
+                errorMessage.classList.remove("headShake")
+                const currentObject = readValueFromStore(`${section}.${type}`)[index]
+                let array = readValueFromStore(`${section}.${type}`)
+                let modifiedObject = { ...currentObject, "shortcutKey": event.target.value }
+                array.splice(index, 1, modifiedObject)
+                writeValueToStore(`${section}.${type}`, array)
+                ipcRenderer.send("refresh-shortcuts")
+            }
+            else
+                errorMessage.style.display = "block"
+            errorMessage.style.animation = "headShake ease-in-out 1s"
+        }
     })
     if (type != "clear" && section != "presence") {
         valueInput1.addEventListener("keyup", function (event) {
