@@ -63,10 +63,9 @@ app.whenReady().then(() => {
     mainWindow.webContents.once("dom-ready", function () {
         mainWindow.webContents.send("read-slack-token", readToken())
     })
-    mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-        shell.openExternal(url);
-        return { action: 'deny' };
-    });
+    mainWindow.once("focus", function () {
+        mainWindow.webContents.send("read-slack-token", readToken())
+    })
 
     setGlobalShortCuts(mainWindow)
 
