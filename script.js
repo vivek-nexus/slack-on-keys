@@ -10,6 +10,7 @@ let slackTokenText = document.querySelector("#i-slack-token")
 let saveButton = document.querySelector("#b-save")
 let dndAddAnotherButton = document.querySelector("#b-dnd-set")
 let statusAddAnotherButton = document.querySelector("#b-status-set")
+let generateSlackTokenButton = document.querySelector("#generate-slack-token")
 
 
 
@@ -25,6 +26,10 @@ slackTokenText.addEventListener("keyup", function (event) {
 
 saveButton.addEventListener("click", () => {
     ipcRenderer.send("minimise");
+})
+
+generateSlackTokenButton.addEventListener("click", () => {
+    require("electron").shell.openExternal("https://slack.com/oauth/v2/authorize?client_id=3243307866673.5076213115026&scope=&user_scope=dnd:read,dnd:write,im:read,im:write,users.profile:read,users.profile:write,users:write,chat:write,channels:read")
 })
 
 
