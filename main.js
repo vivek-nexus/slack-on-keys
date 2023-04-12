@@ -150,8 +150,10 @@ function minimise() {
         app.dock.hide()
 }
 
-// Slack functions
 
+
+
+// Slack functions
 function setPresence(type) {
     let token = readToken();
 
@@ -251,7 +253,6 @@ function clearDND() {
         .catch((error) => console.log("error", error));
 }
 
-
 function alterStatus(type, index) {
     let token = readToken();
     let statusEmojiText = store.get("status.set")[index]["statusEmojiText"]
@@ -300,7 +301,7 @@ function alterStatus(type, index) {
 
 
 
-
+// helpers
 function loadDefaultValues() {
     if (store.has("token"))
         return
