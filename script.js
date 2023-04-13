@@ -88,18 +88,27 @@ function writeValueToStore(key, value) {
     store.set(key, value)
 }
 
-function checkIfShortcutIsTaken(key) {
+function checkIfShortcutIsTaken(key, section, type, index) {
     let taken = false
     const storeObject = Object.keys(readValueFromStore(store.store))
     storeObject.map((storeItem) => {
         if (storeItem != "token") {
-            readValueFromStore(`${storeItem}.set`).map((shortcutItem) => {
-                if (shortcutItem["shortcutKey"] == key)
-                    taken = true
+
+            readValueFromStore(`${storeItem}.set`).map((shortcutItem, itemIndex) => {
+                if (shortcutItem["shortcutKey"] == key) {
+                    if ((section == storeItem) && (type == "set") && (index == itemIndex))
+                        return
+                    else
+                        taken = true
+                }
             })
-            readValueFromStore(`${storeItem}.clear`).map((shortcutItem) => {
-                if (shortcutItem["shortcutKey"] == key)
-                    taken = true
+            readValueFromStore(`${storeItem}.clear`).map((shortcutItem, itemIndex) => {
+                if (shortcutItem["shortcutKey"] == key) {
+                    if ((section == storeItem) && (type == "clear") && (index == itemIndex))
+                        return
+                    else
+                        taken = true
+                }
             })
         }
     })
@@ -232,7 +241,7 @@ function ActionItem(section, type, index) {
     // change events
     shortcutKeyInput.addEventListener("keyup", function (event) {
         if (event.target.value != "") {
-            if (!checkIfShortcutIsTaken(event.target.value)) {
+            if (!checkIfShortcutIsTaken(event.target.value, section, type, index)) {
                 errorMessage.style.display = "none"
                 errorMessage.style.animation = ""
                 errorMessage.classList.remove("headShake")

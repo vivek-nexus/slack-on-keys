@@ -90,7 +90,7 @@ ipcMain.on("general-message", function (event, message) {
 ipcMain.on("refresh-shortcuts", () => {
     setTimeout(() => {
         setGlobalShortCuts()
-    }, 500);
+    }, 100);
 })
 
 
