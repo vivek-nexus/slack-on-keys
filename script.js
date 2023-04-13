@@ -291,8 +291,9 @@ function checkIfShortcutIsTaken(key, section, type, index) {
     let taken = false
     const storeObject = Object.keys(readValueFromStore(store.store))
     storeObject.map((storeItem) => {
-        if (storeItem != "token") {
-
+        if ((storeItem == "token") || (storeItem == "storageVersion"))
+            return
+        else {
             readValueFromStore(`${storeItem}.set`).map((shortcutItem, itemIndex) => {
                 if (shortcutItem["shortcutKey"] == key) {
                     if ((section == storeItem) && (type == "set") && (index == itemIndex))
