@@ -178,7 +178,7 @@ function setPresence(type) {
             else {
                 new Notification({
                     title: `Oops! Could not set to ${type == "auto" ? `active` : `away`}!`,
-                    body: "Please check your Slack token"
+                    body: "Please check/regenrate Slack token"
                 }).show();
             }
         })
@@ -196,7 +196,7 @@ function setDND(index) {
     if (!DNDExpiry) {
         new Notification({
             title: `Oops! Notifications not paused!`,
-            body: "Please check your Slack token or the notification parameters"
+            body: "Please check/regenrate Slack token or the notification parameters"
         }).show();
         return
     }
@@ -222,7 +222,7 @@ function setDND(index) {
             else {
                 new Notification({
                     title: `Oops! Notifications not paused!`,
-                    body: "Please check your Slack token or the notification parameters"
+                    body: "Please check/regenrate Slack token or the notification parameters"
                 }).show();
             }
         })
@@ -257,7 +257,7 @@ function clearDND() {
             else {
                 new Notification({
                     title: `Oops! Notifications not resumed!`,
-                    body: "Please check your Slack token"
+                    body: "Please check/regenrate Slack token"
                 }).show();
             }
         })
@@ -304,7 +304,7 @@ function alterStatus(type, index) {
             else {
                 new Notification({
                     title: `Oops! Could not ${type} status!`,
-                    body: `Please check your Slack token or the status parameters`
+                    body: `Please check/regenrate Slack token or the status parameters`
                 }).show();
             }
         })
