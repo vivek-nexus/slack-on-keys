@@ -93,6 +93,10 @@ ipcMain.on("refresh-shortcuts", () => {
     }, 100);
 })
 
+ipcMain.handle("get-app-version", function () {
+    return app.getVersion()
+})
+
 
 
 

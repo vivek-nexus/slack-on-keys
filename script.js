@@ -1,5 +1,5 @@
 // imports
-const { ipcRenderer, safeStorage } = require("electron")
+const { ipcRenderer, safeStorage, app } = require("electron")
 const Store = require('electron-store');
 
 // declarations
@@ -11,6 +11,7 @@ let saveButton = document.querySelector("#b-save")
 let dndAddAnotherButton = document.querySelector("#b-dnd-set")
 let statusAddAnotherButton = document.querySelector("#b-status-set")
 let generateSlackTokenButton = document.querySelector("#generate-slack-token")
+let appVersionText = document.querySelector("#app-version")
 
 
 
@@ -22,6 +23,10 @@ ipcRenderer.invoke("read-slack-token").then((token) => {
 slackTokenText.addEventListener("keyup", function (event) {
     if (slackTokenText.value != "●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●")
         ipcRenderer.send("store-slack-token", slackTokenText.value)
+})
+
+ipcRenderer.invoke("get-app-version").then((version) => {
+    appVersionText.innerHTML = `Slack on Keys version ${version}`
 })
 
 
@@ -77,43 +82,6 @@ statusAddAnotherButton.addEventListener("click", function () {
 
 
 
-function readValueFromStore(key) {
-    if (store.get(key) == undefined)
-        return ``
-    else
-        return store.get(key)
-}
-
-function writeValueToStore(key, value) {
-    store.set(key, value)
-}
-
-function checkIfShortcutIsTaken(key, section, type, index) {
-    let taken = false
-    const storeObject = Object.keys(readValueFromStore(store.store))
-    storeObject.map((storeItem) => {
-        if (storeItem != "token") {
-
-            readValueFromStore(`${storeItem}.set`).map((shortcutItem, itemIndex) => {
-                if (shortcutItem["shortcutKey"] == key) {
-                    if ((section == storeItem) && (type == "set") && (index == itemIndex))
-                        return
-                    else
-                        taken = true
-                }
-            })
-            readValueFromStore(`${storeItem}.clear`).map((shortcutItem, itemIndex) => {
-                if (shortcutItem["shortcutKey"] == key) {
-                    if ((section == storeItem) && (type == "clear") && (index == itemIndex))
-                        return
-                    else
-                        taken = true
-                }
-            })
-        }
-    })
-    return taken
-}
 
 
 
@@ -300,4 +268,44 @@ function ActionItem(section, type, index) {
     })
 }
 
+
+
+
+function readValueFromStore(key) {
+    if (store.get(key) == undefined)
+        return ``
+    else
+        return store.get(key)
+}
+
+function writeValueToStore(key, value) {
+    store.set(key, value)
+}
+
+function checkIfShortcutIsTaken(key, section, type, index) {
+    let taken = false
+    const storeObject = Object.keys(readValueFromStore(store.store))
+    storeObject.map((storeItem) => {
+        if (storeItem != "token") {
+
+            readValueFromStore(`${storeItem}.set`).map((shortcutItem, itemIndex) => {
+                if (shortcutItem["shortcutKey"] == key) {
+                    if ((section == storeItem) && (type == "set") && (index == itemIndex))
+                        return
+                    else
+                        taken = true
+                }
+            })
+            readValueFromStore(`${storeItem}.clear`).map((shortcutItem, itemIndex) => {
+                if (shortcutItem["shortcutKey"] == key) {
+                    if ((section == storeItem) && (type == "clear") && (index == itemIndex))
+                        return
+                    else
+                        taken = true
+                }
+            })
+        }
+    })
+    return taken
+}
 
