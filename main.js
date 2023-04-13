@@ -167,6 +167,7 @@ function setPresence(type) {
     };
 
     fetch(`https://slack.com/api/users.setPresence?presence=${type}&pretty=1`, requestOptions)
+        .then((response) => response.json())
         .then((result) => {
             if (result.ok == true) {
                 new Notification({
@@ -176,7 +177,7 @@ function setPresence(type) {
             }
             else {
                 new Notification({
-                    title: `Oops! Could not set to ${type}!`,
+                    title: `Oops! Could not set to ${type == "auto" ? `active` : `away`}!`,
                     body: "Please check your Slack token"
                 }).show();
             }
@@ -210,6 +211,7 @@ function setDND(index) {
     };
 
     fetch(`https://slack.com/api/dnd.setSnooze?num_minutes=${DNDExpiry}&pretty=1`, requestOptions)
+        .then((response) => response.json())
         .then((result) => {
             if (result.ok == true) {
                 new Notification({
@@ -244,6 +246,7 @@ function clearDND() {
     };
 
     fetch(`https://slack.com/api/dnd.endSnooze?pretty=1`, requestOptions)
+        .then((response) => response.json())
         .then((result) => {
             if (result.ok == true) {
                 new Notification({
@@ -300,7 +303,7 @@ function alterStatus(type, index) {
             }
             else {
                 new Notification({
-                    title: `Oops! Could not set status!`,
+                    title: `Oops! Could not ${type} status!`,
                     body: `Please check your Slack token or the status parameters`
                 }).show();
             }
