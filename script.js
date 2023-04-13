@@ -17,10 +17,10 @@ let generateSlackTokenButton = document.querySelector("#generate-slack-token")
 // slack token read / store messaging
 ipcRenderer.invoke("read-slack-token").then((token) => {
     if (token != "")
-        slackTokenText.value = "Saved but encrypted"
+        slackTokenText.value = "●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●"
 })
 slackTokenText.addEventListener("keyup", function (event) {
-    if (slackTokenText.value != "Saved but encrypted")
+    if (slackTokenText.value != "●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●")
         ipcRenderer.send("store-slack-token", slackTokenText.value)
 })
 
