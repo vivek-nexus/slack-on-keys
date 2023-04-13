@@ -15,7 +15,6 @@ let appVersionText = document.querySelector("#app-version")
 let downloadsButton = document.querySelector("#downloads")
 
 
-
 // slack token read / store messaging
 ipcRenderer.invoke("read-slack-token").then((token) => {
     if (token != "")
@@ -57,6 +56,12 @@ for (let i = 0; i < readValueFromStore("dnd.set").length; i++) {
 for (let i = 0; i < readValueFromStore("status.set").length; i++) {
     ActionItem("status", "set", i)
 }
+
+
+
+
+
+
 
 dndAddAnotherButton.addEventListener("click", function () {
     let currentItems = readValueFromStore("dnd.set")
@@ -149,9 +154,13 @@ function ActionItem(section, type, index) {
             actionItemContainer.innerHTML = `
         <div class="d-flex align-items-center">
             ${shortcutKeyInnerHTML}
-            <div class="form-floating mx-2">
+            <div class="form-floating ml-2">
                 <input id="status-emoji-key-input-${section}-${type}-${index}" class="form-control" />
                 <label id="status-emoji-key-label-${section}-${type}-${index}"> Status emoji text</label>
+            </div>
+            <div id="emoticon-${section}-${type}-${index}" class="ml-n5">
+                <img src="./emoticon.svg" />
+                // <emoji-picker></emoji-picker>
             </div>
             <div class="form-floating mx-2">
                 <input id="status-text-key-input-${section}-${type}-${index}" class="form-control" />
@@ -192,6 +201,8 @@ function ActionItem(section, type, index) {
         valueInput2 = document.querySelector(`#status-text-key-input-${section}-${type}-${index}`)
         valueInput3 = document.querySelector(`#status-expiry-key-input-${section}-${type}-${index}`)
         removeButton = document.querySelector(`#status-remove-button-${section}-${type}-${index}`)
+
+
     }
 
 
@@ -217,7 +228,6 @@ function ActionItem(section, type, index) {
             if (!checkIfShortcutIsTaken(event.target.value, section, type, index)) {
                 errorMessage.style.display = "none"
                 errorMessage.style.animation = ""
-                errorMessage.classList.remove("headShake")
                 const currentObject = readValueFromStore(`${section}.${type}`)[index]
                 let array = readValueFromStore(`${section}.${type}`)
                 let modifiedObject = { ...currentObject, "shortcutKey": event.target.value }
