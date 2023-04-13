@@ -356,10 +356,16 @@ function loadDefaultValues() {
             "status": {
                 "set": [
                     {
-                        "shortcutKey": "5",
+                        "shortcutKey": "L",
                         "statusEmojiText": ":pizza:",
                         "statusText": "Lunch",
                         "statusExpiry": "60"
+                    },
+                    {
+                        "shortcutKey": "5",
+                        "statusEmojiText": "🚕",
+                        "statusText": "Travelling to office",
+                        "statusExpiry": "30"
                     }
                 ],
                 "clear": [
