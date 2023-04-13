@@ -182,6 +182,10 @@ function setPresence(type) {
             }
         })
         .catch((error) => console.log("error", error));
+
+    setTimeout(() => {
+        checkForUpdates()
+    }, 10000);
 }
 
 function setDND(index) {
@@ -221,6 +225,10 @@ function setDND(index) {
             }
         })
         .catch((error) => console.log("error", error));
+
+    setTimeout(() => {
+        checkForUpdates()
+    }, 10000);
 }
 
 function clearDND() {
@@ -251,6 +259,10 @@ function clearDND() {
             }
         })
         .catch((error) => console.log("error", error));
+
+    setTimeout(() => {
+        checkForUpdates()
+    }, 10000);
 }
 
 function alterStatus(type, index) {
@@ -294,6 +306,10 @@ function alterStatus(type, index) {
             }
         })
         .catch((error) => console.log("error", error));
+
+    setTimeout(() => {
+        checkForUpdates()
+    }, 10000);
 }
 
 
@@ -363,5 +379,26 @@ function readToken() {
         let decryptedToken = safeStorage.decryptString(Buffer.from(store.get("token"), "latin1"))
         return decryptedToken
     }
+}
+
+function checkForUpdates() {
+    // https://stackoverflow.com/a/42518434
+    fetch(
+        "https://yakshag.github.io/slack-on-keys/package.json",
+        { cache: "no-store" }
+    )
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.version > app.getVersion()) {
+                new Notification({
+                    title: `New update available! Download 👇`,
+                    body: `https://github.com/yakshaG/slack-on-keys`
+                }).show();
+            }
+
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 }
 

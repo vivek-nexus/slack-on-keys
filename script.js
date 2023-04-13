@@ -309,3 +309,4 @@ function checkIfShortcutIsTaken(key, section, type, index) {
     return taken
 }
 
+
