@@ -326,6 +326,7 @@ function loadDefaultValues() {
         return
     else
         store.store = {
+            "storageVersion": "1",
             "token": "",
             "presence": {
                 "set": [
