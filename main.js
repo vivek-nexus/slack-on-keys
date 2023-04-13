@@ -402,7 +402,7 @@ function checkForUpdates() {
             if (result.version > app.getVersion()) {
                 new Notification({
                     title: `New update available! Download 👇`,
-                    body: `https://github.com/yakshaG/slack-on-keys`
+                    body: `Click on downloads link in the app`
                 }).show();
             }
 

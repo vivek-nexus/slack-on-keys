@@ -12,6 +12,7 @@ let dndAddAnotherButton = document.querySelector("#b-dnd-set")
 let statusAddAnotherButton = document.querySelector("#b-status-set")
 let generateSlackTokenButton = document.querySelector("#generate-slack-token")
 let appVersionText = document.querySelector("#app-version")
+let downloadsButton = document.querySelector("#downloads")
 
 
 
@@ -36,6 +37,10 @@ saveButton.addEventListener("click", () => {
 
 generateSlackTokenButton.addEventListener("click", () => {
     require("electron").shell.openExternal("https://slack.com/oauth/v2/authorize?client_id=3243307866673.5076213115026&scope=&user_scope=dnd:read,dnd:write,im:read,im:write,users.profile:read,users.profile:write,users:write,chat:write,channels:read")
+})
+
+downloadsButton.addEventListener("click", () => {
+    require("electron").shell.openExternal("https://github.com/yakshaG/slack-on-keys")
 })
 
 
