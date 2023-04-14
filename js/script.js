@@ -265,12 +265,10 @@ function ActionItem(section, type, index) {
             valueInput1.addEventListener("mouseenter", function () {
                 errorMessage.innerHTML = "You can copy paste custom emojis from Slack like <b>:bowtie:</b>"
                 errorMessage.style.display = "block"
-                errorMessage.style.animation = "fadeIn ease-in-out 1s"
             })
             valueInput1.addEventListener("mouseleave", function () {
                 errorMessage.innerHTML = ""
                 errorMessage.style.display = "none"
-                errorMessage.style.animation = ""
             })
             emoticon.addEventListener("click", function () {
                 if (emojiPicker.style.display == "none")
