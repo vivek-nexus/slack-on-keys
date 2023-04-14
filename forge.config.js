@@ -20,13 +20,13 @@ module.exports = {
         }
       },
     },
-    // {
-    //   name: '@electron-forge/maker-rpm',
-    //   config: {
-    //     options: {
-    //       icon: '/icon.png'
-    //     }
-    //   },
-    // },
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {
+        options: {
+          icon: './images/icon.png'
+        }
+      },
+    },
   ]
 };
