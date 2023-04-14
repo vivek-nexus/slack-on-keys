@@ -159,6 +159,7 @@ label::after {
     margin-left: -2.5rem;
 }
 
+
 @keyframes headShake {
     0% {
         transform: translateX(0);
@@ -183,4 +184,18 @@ label::after {
     50% {
         transform: translateX(0);
     }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fadeIn {
+    animation-name: fadeIn;
 }

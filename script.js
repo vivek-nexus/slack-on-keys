@@ -229,6 +229,7 @@ function ActionItem(section, type, index) {
     shortcutKeyInput.addEventListener("keyup", function (event) {
         if (event.target.value != "") {
             if (!checkIfShortcutIsTaken(event.target.value, section, type, index)) {
+                errorMessage.innerHTML = ""
                 errorMessage.style.display = "none"
                 errorMessage.style.animation = ""
                 const currentObject = readValueFromStore(`${section}.${type}`)[index]
@@ -238,9 +239,11 @@ function ActionItem(section, type, index) {
                 writeValueToStore(`${section}.${type}`, array)
                 ipcRenderer.send("refresh-shortcuts")
             }
-            else
+            else {
+                errorMessage.innerHTML = "That key is already taken!"
                 errorMessage.style.display = "block"
-            errorMessage.style.animation = "headShake ease-in-out 1s"
+                errorMessage.style.animation = "headShake ease-in-out 1s"
+            }
         }
     })
     if (type != "clear" && section != "presence") {
@@ -259,6 +262,16 @@ function ActionItem(section, type, index) {
         })
 
         if (section == "status") {
+            valueInput1.addEventListener("mouseenter", function () {
+                errorMessage.innerHTML = "You can copy paste custom emojis from Slack like <b>:bowtie:</b>"
+                errorMessage.style.display = "block"
+                errorMessage.style.animation = "fadeIn ease-in-out 1s"
+            })
+            valueInput1.addEventListener("mouseleave", function () {
+                errorMessage.innerHTML = ""
+                errorMessage.style.display = "none"
+                errorMessage.style.animation = ""
+            })
             emoticon.addEventListener("click", function () {
                 if (emojiPicker.style.display == "none")
                     emojiPicker.style.display = "block"
