@@ -117,7 +117,6 @@ function createWindow() {
     })
 
     mainWindow.loadFile('app.html')
-    mainWindowRendered()
     return mainWindow
 }
 
@@ -411,15 +410,6 @@ function checkForUpdates() {
         .catch((err) => {
             console.log(err);
         });
-}
-
-
-/* 2. Define your event. */
-function mainWindowRendered() {
-    let date = Date.now();
-    gtag('event', 'page_load', {
-        'platform': process.platform,
-    });
 }
 
 
