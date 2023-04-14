@@ -117,6 +117,7 @@ function createWindow() {
     })
 
     mainWindow.loadFile('app.html')
+    mainWindowRendered()
     return mainWindow
 }
 
@@ -401,7 +402,7 @@ function checkForUpdates() {
         .then((result) => {
             if (result.version > app.getVersion()) {
                 new Notification({
-                    title: `New update available! Download 👇`,
+                    title: `New update available!`,
                     body: `Click on downloads link in the app`
                 }).show();
             }
@@ -411,4 +412,14 @@ function checkForUpdates() {
             console.log(err);
         });
 }
+
+
+/* 2. Define your event. */
+function mainWindowRendered() {
+    let date = Date.now();
+    gtag('event', 'page_load', {
+        'platform': process.platform,
+    });
+}
+
 
