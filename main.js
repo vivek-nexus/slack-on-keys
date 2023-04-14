@@ -357,13 +357,13 @@ function loadDefaultValues() {
                 "set": [
                     {
                         "shortcutKey": "L",
-                        "statusEmojiText": ":pizza:",
+                        "statusEmojiText": "🍕",
                         "statusText": "Lunch",
                         "statusExpiry": "60"
                     },
                     {
                         "shortcutKey": "5",
-                        "statusEmojiText": "🚕",
+                        "statusEmojiText": ":taxi:",
                         "statusText": "Travelling to office",
                         "statusExpiry": "30"
                     }

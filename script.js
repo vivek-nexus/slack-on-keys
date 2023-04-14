@@ -99,7 +99,7 @@ statusAddAnotherButton.addEventListener("click", function () {
 function ActionItem(section, type, index) {
     let sectionDOM = document.querySelector(`#${section}`)
 
-    let actionItemContainer, shortcutKeyInput, errorMessage, valueInput1, valueInput2, valueInput3, removeButton
+    let actionItemContainer, shortcutKeyInput, errorMessage, valueInput1, valueInput2, valueInput3, removeButton, emoticon, emojiPicker;
 
     actionItemContainer = document.createElement("div")
     actionItemContainer.classList.add("action-item-container")
@@ -154,13 +154,15 @@ function ActionItem(section, type, index) {
             actionItemContainer.innerHTML = `
         <div class="d-flex align-items-center">
             ${shortcutKeyInnerHTML}
-            <div class="form-floating ml-2">
+            <div class="form-floating mx-2">
                 <input id="status-emoji-key-input-${section}-${type}-${index}" class="form-control" />
                 <label id="status-emoji-key-label-${section}-${type}-${index}"> Status emoji text</label>
             </div>
-            <div id="emoticon-${section}-${type}-${index}" class="ml-n5">
-                <img src="./emoticon.svg" />
-                // <emoji-picker></emoji-picker>
+            <div class="position-relative emoticon me-3">
+                <img id="emoticon-${section}-${type}-${index}" src="./emoticon.svg" class="cursor-pointer" />
+                <div class="position-absolute z-10">
+                    <emoji-picker id="emoji-picker-${section}-${type}-${index}"></emoji-picker>
+                </div>     
             </div>
             <div class="form-floating mx-2">
                 <input id="status-text-key-input-${section}-${type}-${index}" class="form-control" />
@@ -201,8 +203,8 @@ function ActionItem(section, type, index) {
         valueInput2 = document.querySelector(`#status-text-key-input-${section}-${type}-${index}`)
         valueInput3 = document.querySelector(`#status-expiry-key-input-${section}-${type}-${index}`)
         removeButton = document.querySelector(`#status-remove-button-${section}-${type}-${index}`)
-
-
+        emoticon = document.querySelector(`#emoticon-${section}-${type}-${index}`)
+        emojiPicker = document.querySelector(`#emoji-picker-${section}-${type}-${index}`)
     }
 
 
@@ -215,6 +217,7 @@ function ActionItem(section, type, index) {
         valueInput1.value = readValueFromStore(`${section}.${type}`)[index][section == "dnd" ? `dndExpiry` : `statusEmojiText`]
 
         if (section == "status") {
+            emojiPicker.style.display = "none"
             valueInput2.value = readValueFromStore(`${section}.${type}`)[index]["statusText"]
             valueInput3.value = readValueFromStore(`${section}.${type}`)[index]["statusExpiry"]
         }
@@ -256,6 +259,19 @@ function ActionItem(section, type, index) {
         })
 
         if (section == "status") {
+            emoticon.addEventListener("click", function () {
+                if (emojiPicker.style.display == "none")
+                    emojiPicker.style.display = "block"
+                else
+                    emojiPicker.style.display = "none"
+            })
+            emojiPicker.addEventListener("emoji-click", function (event) {
+                valueInput1.value = event.detail.unicode
+                valueInput1.dispatchEvent(new KeyboardEvent('keyup'))
+                emojiPicker.style.display = "none"
+            })
+
+
             valueInput2.addEventListener("keyup", function (event) {
                 if (event.target.value) ipcRenderer.send("refresh-shortcuts")
                 const currentObject = readValueFromStore(`${section}.${type}`)[index]
