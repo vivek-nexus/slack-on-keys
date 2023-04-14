@@ -159,7 +159,7 @@ function ActionItem(section, type, index) {
                 <label id="status-emoji-key-label-${section}-${type}-${index}"> Status emoji text</label>
             </div>
             <div class="position-relative emoticon me-3">
-                <img id="emoticon-${section}-${type}-${index}" src="./emoticon.svg" class="cursor-pointer" />
+                <img id="emoticon-${section}-${type}-${index}" src="./assets/emoticon.svg" class="cursor-pointer" />
                 <div class="position-absolute z-10">
                     <emoji-picker id="emoji-picker-${section}-${type}-${index}"></emoji-picker>
                 </div>     

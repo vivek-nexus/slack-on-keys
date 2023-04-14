@@ -62,7 +62,7 @@ app.whenReady().then(() => {
 
     setGlobalShortCuts(mainWindow)
 
-    tray = new Tray(path.join(__dirname, 'icon-32.png'))
+    tray = new Tray(path.join(__dirname, 'assets/icon-24.png'))
     tray.setToolTip('This is my application.')
     tray.setContextMenu(contextMenu)
 })
