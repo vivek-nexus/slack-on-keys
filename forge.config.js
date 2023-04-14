@@ -1,6 +1,6 @@
 module.exports = {
   packagerConfig: {
-    icon: './assets/icon'
+    icon: './images/icon'
   },
   rebuildConfig: {},
   makers: [
@@ -16,7 +16,7 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         options: {
-          icon: './assets/icon.png'
+          icon: './images/icon.png'
         }
       },
     },
