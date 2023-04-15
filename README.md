@@ -2,7 +2,7 @@
 ⚡ Control your Slack from any app window with keyboard shortcuts ⚡
 
 
-<img src="https://user-images.githubusercontent.com/26523871/232101664-c4520d44-8c76-425d-b00d-2e88773e50f7.png" width="50%"/>
+<img src="https://user-images.githubusercontent.com/26523871/232101664-c4520d44-8c76-425d-b00d-2e88773e50f7.png" width="80%"/>
 
 ### Demo
 
