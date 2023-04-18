@@ -35,7 +35,7 @@ saveButton.addEventListener("click", () => {
 })
 
 generateSlackTokenButton.addEventListener("click", () => {
-    require("electron").shell.openExternal("https://slack.com/oauth/v2/authorize?client_id=3243307866673.5076213115026&scope=&user_scope=dnd:read,dnd:write,im:read,im:write,users.profile:read,users.profile:write,users:write,chat:write,channels:read")
+    require("electron").shell.openExternal("https://slack.com/oauth/v2/authorize?client_id=3243307866673.5076213115026&scope=&user_scope=dnd:read,dnd:write,users.profile:read,users.profile:write,users:write,users:read")
 })
 
 downloadsButton.addEventListener("click", () => {
