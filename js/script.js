@@ -154,7 +154,7 @@ function ActionItem(section, type, index) {
             actionItemContainer.innerHTML = `
         <div class="d-flex align-items-center">
             ${shortcutKeyInnerHTML}
-            <div class="form-floating mx-2">
+            <div class="form-floating mx-2" data-bs-toggle="tooltip" title="You can copy paste custom emojis from Slack like :bowtie:">
                 <input id="status-emoji-key-input-${section}-${type}-${index}" class="form-control" />
                 <label id="status-emoji-key-label-${section}-${type}-${index}"> Status emoji text</label>
             </div>
@@ -205,6 +205,8 @@ function ActionItem(section, type, index) {
         removeButton = document.querySelector(`#status-remove-button-${section}-${type}-${index}`)
         emoticon = document.querySelector(`#emoticon-${section}-${type}-${index}`)
         emojiPicker = document.querySelector(`#emoji-picker-${section}-${type}-${index}`)
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     }
 
 
@@ -262,16 +264,8 @@ function ActionItem(section, type, index) {
         })
 
         if (section == "status") {
-            valueInput1.addEventListener("mouseenter", function () {
-                errorMessage.innerHTML = "You can copy paste custom emojis from Slack like <b>:bowtie:</b>"
-                errorMessage.style.display = "block"
-            })
-            valueInput1.addEventListener("mouseleave", function () {
-                errorMessage.innerHTML = ""
-                errorMessage.style.display = "none"
-            })
-            emoticon.addEventListener("click", function () {
-                if (emojiPicker.style.display == "none")
+            document.addEventListener("click", function (event) {
+                if ((event.target.id == `emoticon-${section}-${type}-${index}`) || (event.target.id == `emoji-picker-${section}-${type}-${index}`))
                     emojiPicker.style.display = "block"
                 else
                     emojiPicker.style.display = "none"
