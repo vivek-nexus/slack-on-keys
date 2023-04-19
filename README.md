@@ -9,7 +9,7 @@
 
 ### Demo
 
-<img src="https://user-images.githubusercontent.com/26523871/233091605-23e65400-cbb0-4972-b33b-9071a2a8bffd.gif" width="80%" alt="Loading demo" />
+<img src="https://user-images.githubusercontent.com/26523871/233091605-23e65400-cbb0-4972-b33b-9071a2a8bffd.gif" width="100%" alt="Loading demo" />
 
 
 
