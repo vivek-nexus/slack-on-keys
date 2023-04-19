@@ -9,7 +9,7 @@
 
 ### Demo
 
-<img src="https://user-images.githubusercontent.com/26523871/232178644-0192502f-81b4-4b0b-aea3-7379f6549236.gif" alt="Loading demo" />
+<img src="https://user-images.githubusercontent.com/26523871/233091605-23e65400-cbb0-4972-b33b-9071a2a8bffd.gif" width="80%" alt="Loading demo" />
 
 
 
@@ -19,7 +19,7 @@
 ## Download
 **Available for Mac, Linux (deb and rpm) and Windows**
 
-Get the latest version from [releases page](https://github.com/yakshaG/slack-on-keys/releases)
+Download the latest version from [releases page](https://github.com/yakshaG/slack-on-keys/releases)
 
 <br/>
 <br/>
@@ -27,3 +27,11 @@ Get the latest version from [releases page](https://github.com/yakshaG/slack-on-
 
 ## Updating
 Get the latest version from [releases page](https://github.com/yakshaG/slack-on-keys/releases)
+
+<br/>
+<br/>
+
+---
+
+### Testing credits
+Pete, Ruby, Atreya, KKT, Naresh, Sreejit, Asveen, Abhishek, Sarthak, Adi, Rajashree
