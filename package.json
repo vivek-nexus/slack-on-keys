@@ -1,9 +1,9 @@
 {
   "name": "slack-on-keys",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "⚡ Control your Slack from any app window with keyboard shortcuts ⚡",
   "main": "main.js",
-  "repository": "https://github.com/yakshaG/slack-on-keys",
+  "repository": "https://github.com/vivek-nexus/slack-on-keys",
   "author": "Vivek G",
   "license": "MIT",
   "scripts": {

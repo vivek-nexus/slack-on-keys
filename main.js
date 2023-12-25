@@ -394,7 +394,7 @@ function readToken() {
 function checkForUpdates() {
     // https://stackoverflow.com/a/42518434
     fetch(
-        "https://yakshag.github.io/slack-on-keys/package.json",
+        "https://vivek-nexus.github.io/slack-on-keys/package.json",
         { cache: "no-store" }
     )
         .then((response) => response.json())

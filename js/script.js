@@ -39,7 +39,7 @@ generateSlackTokenButton.addEventListener("click", () => {
 })
 
 downloadsButton.addEventListener("click", () => {
-    require("electron").shell.openExternal("https://github.com/yakshaG/slack-on-keys/blob/main/README.md#updating")
+    require("electron").shell.openExternal("https://github.com/vivek-nexus/slack-on-keys/blob/main/README.md#updating")
 })
 
 
