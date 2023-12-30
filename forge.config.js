@@ -1,5 +1,6 @@
 module.exports = {
   packagerConfig: {
+    asar: true,
     icon: './images/icon'
   },
   rebuildConfig: {},
@@ -20,13 +21,19 @@ module.exports = {
         }
       },
     },
+    // {
+    //   name: '@electron-forge/maker-rpm',
+    //   config: {
+    //     options: {
+    //       icon: './images/icon.png'
+    //     }
+    //   }
+    // },
+  ],
+  plugins: [
     {
-      name: '@electron-forge/maker-rpm',
-      config: {
-        options: {
-          icon: './images/icon.png'
-        }
-      },
+      name: '@electron-forge/plugin-auto-unpack-natives',
+      config: {},
     },
-  ]
+  ],
 };

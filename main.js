@@ -12,7 +12,7 @@ var autoLauncher = new AutoLaunch({
 // Checking if autoLaunch is enabled, if not then enabling it.
 autoLauncher.isEnabled().then(function (isEnabled) {
     if (isEnabled) return;
-    autoLauncher.enable(); slackTokenInputField.value
+    autoLauncher.enable();
 }).catch(function (err) {
     throw err;
 });
@@ -32,9 +32,6 @@ const contextMenu = Menu.buildFromTemplate([
                     app.dock.show()
             }
             mainWindow.show()
-            mainWindow.webContents.once("dom-ready", function () {
-                mainWindow.webContents.send("read-slack-token", readToken())
-            })
         }
     },
     {
@@ -53,10 +50,18 @@ app.whenReady().then(() => {
     loadDefaultValues()
 
     mainWindow = createWindow()
+    mainWindow.webContents.once("dom-ready", function () {
+        if (readToken() != "")
+            mainWindow.webContents.send("auto-minimise")
+    })
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             mainWindow = createWindow()
+            mainWindow.webContents.once("dom-ready", function () {
+                if (readToken() != "")
+                    mainWindow.webContents.send("auto-minimise")
+            })
         }
     })
 
@@ -399,13 +404,12 @@ function checkForUpdates() {
     )
         .then((response) => response.json())
         .then((result) => {
-            if (result.version > app.getVersion()) {
+            if (result.version != app.getVersion()) {
                 new Notification({
                     title: `New update available!`,
                     body: `Click on downloads link in the app`
                 }).show();
             }
-
         })
         .catch((err) => {
             console.log(err);

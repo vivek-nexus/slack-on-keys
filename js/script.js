@@ -6,13 +6,13 @@ const Store = require('electron-store');
 const store = new Store()
 
 // DOM
-let slackTokenText = document.querySelector("#i-slack-token")
-let saveButton = document.querySelector("#b-save")
-let dndAddAnotherButton = document.querySelector("#b-dnd-set")
-let statusAddAnotherButton = document.querySelector("#b-status-set")
-let generateSlackTokenButton = document.querySelector("#generate-slack-token")
-let appVersionText = document.querySelector("#app-version")
-let downloadsButton = document.querySelector("#downloads")
+const slackTokenText = document.querySelector("#i-slack-token")
+const saveButton = document.querySelector("#b-save")
+const dndAddAnotherButton = document.querySelector("#b-dnd-set")
+const statusAddAnotherButton = document.querySelector("#b-status-set")
+const generateSlackTokenButton = document.querySelector("#generate-slack-token")
+const appVersionText = document.querySelector("#app-version")
+const downloadsButton = document.querySelector("#downloads")
 
 
 // slack token read / store messaging
@@ -20,6 +20,13 @@ ipcRenderer.invoke("read-slack-token").then((token) => {
     if (token != "")
         slackTokenText.value = "●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●"
 })
+
+ipcRenderer.on("auto-minimise", () => {
+    const abortFunction = startCountdown()
+    document.addEventListener("mousemove", abortFunction)
+})
+
+
 slackTokenText.addEventListener("keyup", function (event) {
     if (slackTokenText.value != "●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●")
         ipcRenderer.send("store-slack-token", slackTokenText.value)
@@ -344,6 +351,51 @@ function checkIfShortcutIsTaken(key, section, type, index) {
         }
     })
     return taken
+}
+
+function startCountdown() {
+    const autoMinimseAlert = document.createElement("div")
+    autoMinimseAlert.id = "alert"
+    autoMinimseAlert.classList.add("alert", "alert-primary")
+    autoMinimseAlert.role = "alert"
+    // Set initial styles for the transition
+    autoMinimseAlert.style.opacity = "0";
+    autoMinimseAlert.style.transition = "opacity 0.5s ease-in-out";
+    document.querySelector("body").prepend(autoMinimseAlert);
+    // Trigger reflow to apply initial styles
+    autoMinimseAlert.offsetHeight;
+    // Set final styles to start the transition
+    autoMinimseAlert.style.opacity = "1";
+
+    let count = 3;
+    // Initial call to start the countdown
+    let timeoutId
+    updateCountdown()
+
+    function updateCountdown() {
+        autoMinimseAlert.textContent = `Minimising to system tray in ${count}`;
+
+        if (count === -1) {
+            autoMinimseAlert.textContent = "Auto minimising now"
+            autoMinimseAlert.remove()
+            ipcRenderer.send("minimise")
+        }
+        else {
+            // Continue the countdown
+            count--
+            // Schedule the next update after 1 second
+            timeoutId = setTimeout(updateCountdown, 1000)
+        }
+    }
+
+    // Function to abort the countdown
+    function abortCountdown() {
+        clearTimeout(timeoutId)
+        autoMinimseAlert.remove()
+    }
+
+    // Return the function to allow external abortion
+    return abortCountdown
 }
 
 
