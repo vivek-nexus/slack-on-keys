@@ -42,6 +42,11 @@ body {
     color: var(--font);
 }
 
+.alert {
+    text-align: center;
+    padding: 0.25rem;
+}
+
 p {
     margin-bottom: 0;
     color: var(--font);

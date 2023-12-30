@@ -1,5 +1,6 @@
 module.exports = {
   packagerConfig: {
+    asar: true,
     icon: './images/icon'
   },
   rebuildConfig: {},
@@ -26,7 +27,13 @@ module.exports = {
         options: {
           icon: './images/icon.png'
         }
-      },
+      }
     },
-  ]
+  ],
+  plugins: [
+    {
+      name: '@electron-forge/plugin-auto-unpack-natives',
+      config: {},
+    },
+  ],
 };
