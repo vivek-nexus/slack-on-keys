@@ -45,7 +45,6 @@ body {
 .alert {
     text-align: center;
     padding: 0.25rem;
-    transition: all 0.25s;
 }
 
 p {
