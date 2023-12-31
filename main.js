@@ -303,7 +303,7 @@ function alterStatus(type, index) {
             if (result.ok == true) {
                 new Notification({
                     title: `Slack status ${type == "set" ? `set ${statusExpiryText > 0 ? `for the next ${statusExpiryText} minute${statusExpiryText == 1 ? `` : `s`}` : ``}` : `cleared`}`,
-                    body: type == "set" ? `Communication is the key, isn't it?` : `Alrighty!`
+                    body: type == "set" ? `It's good to communicate, isn't it?` : `Alrighty!`
                 }).show();
             }
             else {
