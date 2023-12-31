@@ -367,13 +367,13 @@ function startCountdown() {
     // Set final styles to start the transition
     autoMinimseAlert.style.opacity = "1";
 
-    let count = 3;
+    let count = 0;
     // Initial call to start the countdown
     let timeoutId
     updateCountdown()
 
     function updateCountdown() {
-        autoMinimseAlert.textContent = `Minimising to system tray in ${count}`;
+        autoMinimseAlert.textContent = `Auto minimising to system tray in ${count}`;
 
         if (count === -1) {
             autoMinimseAlert.textContent = "Auto minimising now"
